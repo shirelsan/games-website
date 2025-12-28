@@ -1,0 +1,78 @@
+/* Header */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fffbfb;
+    padding: 15px 30px;
+    border-bottom: 1px solid #ddd;
+    
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    width: 45px;
+}
+
+.site-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Navigation */
+.main-nav {
+    display: flex;
+    gap: 20px;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #0f0f0f;
+    font-weight: 500;
+    padding-bottom: 2px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.main-nav a:hover {
+    color: #0077cc;
+    border-bottom: 2px solid #0077cc;
+}
+
+
+/* Footer */
+.site-footer {
+    background-color: #fffbfb;
+    color: rgb(15, 15, 15);
+    text-align: center;
+    padding: 15px;
+}
+
+.follow-us {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.social-icons a {
+    display: inline-block;
+    margin: 0 4px;
+}
+
+.social-icons img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.social-icons img:hover {
+    transform: scale(1.1);
+}

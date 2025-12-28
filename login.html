@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>רישום לאתר המשחקים</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+
+    <!-- Right: Logo -->
+    <div class="header-right">
+        <img src="img/logo.png" alt="Logo" class="logo-img">
+    </div>
+
+    <!-- Center: Site Title -->
+    <div class="header-center">
+        <h1 class="site-title">הרשמה לאתר המשחקים</h1>
+    </div>
+
+    <!-- Left: Login / Register -->
+        <a href="login.html">Login</a>
+        <a href="index.html">Home</a>
+    </nav>
+
+</header> 
+
+<main class="main-content-wrapper">
+    
+    <div class="split-screen-container">
+        
+        <div class="banner-column">
+            <div class="banner-overlay"></div> <div class="banner-content">
+                <h2>מוכנים לשחק?</h2>
+                <p>הצטרפו לקהילה הגדולה שלנו! צברו נקודות, שברו שיאים והתחרו מול חברים במשחקים הממכרים ביותר.</p>
+                <div class="banner-decoration"></div>
+            </div>
+        </div>
+
+        <div class="form-column">
+            <section id="register-section">
+                <h2>יצירת חשבון</h2>
+                <p class="subtitle">מלא את הפרטים כדי להתחיל</p>
+
+                <div id="message-area" class="alert hidden"></div>
+
+                <form id="register-form">
+                    <div class="form-row">
+                        <div class="form-group col-half">
+                            <label for="first-name">שם פרטי</label>
+                            <input type="text" id="first-name" name="first-name" placeholder="לדוגמה: דני" required class="text-input">
+                        </div>
+                        <div class="form-group col-half">
+                            <label for="last-name">שם משפחה</label>
+                            <input type="text" id="last-name" name="last-name" placeholder="לדוגמה: לוי" required class="text-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email-register">כתובת אימייל</label>
+                        <input type="email" id="email-register" name="email-register" placeholder="name@example.com" required class="text-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username-register">כינוי במשחק (User Name)</label>
+                        <input type="text" id="username-register" name="username-register" placeholder="GamerPro24" required class="text-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password-register">סיסמה</label>
+                        <input type="password" id="password-register" name="password-register" placeholder="לפחות 8 תווים" required class="text-input">
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">אני מאשר את <a href="#">תנאי השימוש</a></label>
+                    </div>
+
+                    <button type="submit" id="register-button" class="btn primary-btn">
+                        הירשם עכשיו
+                    </button>
+                </form>
+
+                <div class="switch-form">
+                   <span>כבר רשום?</span> <a href="login.html">התחבר למערכת</a>
+                </div>
+            </section>
+        </div>
+        
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <p>© 2025 Games Website. All rights reserved.</p>
+    <div class="follow-us">
+        <span>Follow us on</span>
+
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank">
+                <img src="img/instagram.png" alt="Instagram">
+            </a>
+            <a href="https://www.facebook.com" target="_blank">
+                <img src="img/facebook.png" alt="Facebook">
+            </a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

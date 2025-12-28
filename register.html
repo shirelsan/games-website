@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>רישום לאתר המשחקים</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+
+    <!-- Right: Logo -->
+    <div class="header-right">
+        <img src="img/logo.png" alt="Logo" class="logo-img">
+    </div>
+
+    <!-- Center: Site Title -->
+    <div class="header-center">
+        <h1 class="site-title">הרשמה לאתר המשחקים</h1>
+    </div>
+
+    <!-- Left: Login / Register -->
+        <a href="login.html">Login</a>
+        <a href="index.html">Home</a>
+    </nav>
+
+</header> 
+
+    <main class="container">
+        <section id="register-section">
+            <h2>יצירת משתמש חדש</h2>
+
+            <div id="message-area" class="alert hidden"></div>
+
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="full-name">שם מלא:</label>
+                    <input type="text" id="full-name" name="full-name" required class="text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="email-register">דוא"ל:</label>
+                    <input type="email" id="email-register" name="email-register" required class="text-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="username-register">שם משתמש (כינוי):</label>
+                    <input type="text" id="username-register" name="username-register" required class="text-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="password-register">סיסמה:</label>
+                    <input type="password" id="password-register" name="password-register" required class="text-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password">אימות סיסמה:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required class="text-input">
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">אני מאשר/ת את <a href="#" target="_blank">תנאי השימוש</a></label>
+                </div>
+
+                <button type="submit" id="register-button" class="btn primary-btn">
+                    הירשם
+                </button>
+            </form>
+
+            <p class="switch-form">
+                כבר יש לך חשבון? <a href="login.html">התחבר כאן!</a>
+            </p>
+        </section>
+    </main>
+
+
+    
+ <!-- Footer -->
+<footer class="site-footer">
+    <p>© 2025 Games Website. All rights reserved.</p>
+    <div class="follow-us">
+        <span>Follow us on</span>
+
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank">
+                <img src="img/instagram.png" alt="Instagram">
+            </a>
+            <a href="https://www.facebook.com" target="_blank">
+                <img src="img/facebook.png" alt="Facebook">
+            </a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
