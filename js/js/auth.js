@@ -3,26 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     setupForms();
 });
 
-// פונקציית עזר להצגת הודעות בתוך הטופס
 function showMessage(text, type) {
     const msgBox = document.getElementById('messageBox');
     msgBox.textContent = text;
     
-    // איפוס מחלקות קודמות
     msgBox.className = 'message-box';
     
-    // הוספת הצבע המתאים (אדום או ירוק)
     if (type === 'error') {
         msgBox.classList.add('message-error');
     } else if (type === 'success') {
         msgBox.classList.add('message-success');
     }
 
-    // ניקוי ההודעה אחרי 3 שניות (אופציונלי)
-    setTimeout(() => {
-        msgBox.textContent = '';
-        msgBox.className = 'message-box';
-    }, 4000);
 }
 
 // --- ניהול הטאבים ---
@@ -35,7 +27,6 @@ function setupTabs() {
 
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
-            // ניקוי הודעות כשעוברים טאב
             msgBox.textContent = ''; 
 
             buttons.forEach(b => b.classList.remove('active'));
@@ -91,7 +82,6 @@ function handleRegister(event) {
 
     showMessage("ההרשמה הצליחה! עובר להתחברות...", "success");
 
-    // מעבר אוטומטי להתחברות אחרי שנייה וחצי
     setTimeout(() => {
         document.querySelectorAll('.tab-btn')[0].click();
     }, 1500);
@@ -110,10 +100,8 @@ function handleLogin(event) {
         localStorage.setItem('currentUser', JSON.stringify(user));
         showMessage("התחברת בהצלחה! מיד מתחילים...", "success");
         
-        // כאן תהיה הפניה לדף הבית בעתיד
-        // setTimeout(() => window.location.href = "game.html", 1000);
     } else {
-        // הנה החלק ששאלת עליו! עכשיו זה יציג הודעה אדומה
+
         showMessage("שם משתמש או סיסמה שגויים", "error");
     }
 }
