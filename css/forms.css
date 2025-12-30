@@ -1,0 +1,360 @@
+:root {
+    --color-purple: #4a1c68;
+    --color-orange: #ff9f1c;
+    --color-green: #8ac926;
+    --color-bg: #1a1a2e;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+/* --- קישור חזרה לבית --- */
+.site-header {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.home-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    background: rgba(0,0,0,0.3);
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+.home-link:hover { background: rgba(0,0,0,0.6); }
+
+.header-logo {
+    display: none; /* נסתיר את הלוגו העליון כי יש לוגו בטופס */
+}
+
+/* --- רקע אנימציה צורות מרחפות --- */
+.animated-background {
+    background: var(--color-bg);
+    background: linear-gradient(to left, #8f94fb, #4e54c8);  
+    width: 100%;
+    height:100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.circles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.circles li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: animate 25s linear infinite;
+    bottom: -150px;
+    border-radius: 50%; /* התחלה כעיגול */
+}
+
+/* גיוון בצורות ובצבעים */
+.circles li:nth-child(1) {
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 159, 28, 0.4); /* כתום */
+    animation-delay: 0s;
+    border-radius: 10%; /* ריבוע מעוגל */
+}
+
+.circles li:nth-child(2) {
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    background: rgba(138, 201, 38, 0.4); /* ירוק */
+    animation-delay: 2s;
+    animation-duration: 12s;
+}
+
+.circles li:nth-child(3) {
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    background: rgba(74, 28, 104, 0.5); /* סגול */
+    animation-delay: 4s;
+}
+
+.circles li:nth-child(4) {
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 159, 28, 0.3); /* כתום */
+    animation-delay: 0s;
+    animation-duration: 18s;
+}
+
+.circles li:nth-child(5) {
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    background: rgba(138, 201, 38, 0.4); /* ירוק */
+    animation-delay: 0s;
+    border-radius: 0; /* ריבוע */
+}
+
+.circles li:nth-child(6) {
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    background: rgba(74, 28, 104, 0.3); /* סגול */
+    animation-delay: 3s;
+    border-radius: 50%;
+}
+
+.circles li:nth-child(7) {
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    animation-delay: 7s;
+}
+
+.circles li:nth-child(8) {
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    background: rgba(255, 159, 28, 0.5);
+    animation-delay: 15s;
+    animation-duration: 45s;
+}
+
+.circles li:nth-child(9) {
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    background: rgba(138, 201, 38, 0.5);
+    animation-delay: 2s;
+    animation-duration: 35s;
+}
+
+.circles li:nth-child(10) {
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    background: rgba(74, 28, 104, 0.2);
+    animation-delay: 0s;
+    animation-duration: 11s;
+}
+
+@keyframes animate {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+    100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
+}
+
+/* --- המיכל המרכזי --- */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* --- הכרטיס עצמו --- */
+.auth-card {
+    background-color: rgba(22, 33, 62, 0.9);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    border: 2px solid var(--color-purple);
+    position: relative;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+}
+
+.auth-header-logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.auth-header-logo img {
+    height: 100px;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+/* --- טאבים (Tabs) --- */
+.auth-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid #2B2B36;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 10px 0;
+    cursor: pointer;
+    width: 50%;
+    transition: color 0.3s;
+    z-index: 2;
+}
+
+.tab-btn.active {
+    color: white;
+}
+
+/* הקו הזז מתחת לטאבים */
+.tab-indicator {
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    width: 50%;
+    height: 4px;
+    background-color: var(--color-green);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index: 1;
+}
+
+/* מצב הרשמה - מזיז את הקו ומשנה צבע לכתום */
+.auth-card.show-register .tab-indicator {
+    right: 50%;
+    background-color: var(--color-orange);
+}
+
+/* --- טפסים --- */
+.auth-form {
+    display: none;
+}
+
+.auth-form.active-form {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.input-group { margin-bottom: 15px; }
+
+.input-group label {
+    display: block;
+    color: #ddd;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    background-color: #0f3460;
+    border: 1px solid #4a1c68;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box; /* קריטי למניעת חריגה */
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--color-green);
+    box-shadow: 0 0 8px rgba(139, 195, 74, 0.4);
+}
+
+/* שינוי צבע פוקוס בהרשמה */
+.auth-card.show-register .input-group input:focus {
+    border-color: var(--color-orange);
+    box-shadow: 0 0 8px rgba(255, 159, 28, 0.4);
+}
+
+/* --- כפתורים --- */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 15px;
+}
+
+.btn:hover {
+    transform: scale(1.02);
+}
+
+.btn-login {
+    background: linear-gradient(45deg, var(--color-green), #558b2f);
+    box-shadow: 0 4px 15px rgba(139, 195, 74, 0.3);
+}
+
+.btn-register {
+    background: linear-gradient(45deg, var(--color-orange), #e65100);
+    box-shadow: 0 4px 15px rgba(255, 159, 28, 0.3);
+}
+
+.forgot-pass {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #888;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+.forgot-pass:hover { color: white; }
+
+/* --- הודעות מערכת (שגיאה/הצלחה) --- */
+.message-box {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    min-height: 25px; 
+    font-size: 0.95rem;
+    transition: opacity 0.3s;
+}
+
+.message-error {
+    color: #ff4757; 
+    text-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+}
+
+.message-success {
+    color: #2ecc71; 
+    text-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+}

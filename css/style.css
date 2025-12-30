@@ -1,56 +1,46 @@
-/* Header */
-.site-header {
+/* --- משתנים גלובליים לפי צבעי הלוגו --- */
+:root {
+    --color-orange: #FF9F1C;
+    --color-green: #8bc34a;
+    --color-purple: #673AB7;
+    --color-navy: #1A1A2E; 
+    --bg-color: #f0f4f8;
+    --text-light: #ffffff;
+}
+
+/* --- הגדרות בסיס --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: radial-gradient(circle at center, #e1bee7 0%, #f0f4f8 70%);
+    direction: rtl;
+    min-height: 100vh;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fffbfb;
-    padding: 15px 30px;
-    border-bottom: 1px solid #ddd;
-    
-}
-
-/* Logo */
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo img {
-    width: 45px;
-}
-
-.site-name {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-/* Navigation */
-.main-nav {
-    display: flex;
-    gap: 20px;
-}
-
-.main-nav a {
-    text-decoration: none;
-    color: #0f0f0f;
-    font-weight: 500;
-    padding-bottom: 2px;
-    transition: color 0.3s, border-bottom 0.3s;
-}
-
-.main-nav a:hover {
-    color: #0077cc;
-    border-bottom: 2px solid #0077cc;
+    flex-direction: column;
 }
 
 
-/* Footer */
+
+/* --- Footer --- */
 .site-footer {
-    background-color: #fffbfb;
-    color: rgb(15, 15, 15);
+    background-color: var(--color-navy);
+    color: var(--text-light);
+    padding: 15px 0;
     text-align: center;
-    padding: 15px;
+    width: 100%;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    margin-top: auto;
+}
+
+.site-footer p {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
 }
 
 .follow-us {
@@ -58,21 +48,36 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: 8px;
+    font-size: 0.9rem;
 }
 
-.social-icons a {
-    display: inline-block;
-    margin: 0 4px;
+.social-icons {
+    display: flex;
+    gap: 15px;
 }
 
-.social-icons img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    transition: transform 0.3s;
+.social-icons a img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s;
 }
 
-.social-icons img:hover {
-    transform: scale(1.1);
+.social-icons a img:hover {
+    transform: scale(1.2);
+}
+
+/* התאמה למובייל */
+@media (max-width: 600px) {
+    .site-header {
+        flex-direction: column-reverse;
+        gap: 10px;
+        padding: 15px;
+    }
+    .header-right {
+        flex-direction: column;
+    }
+    .main-nav {
+        border-right: none;
+        padding-right: 0;
+    }
 }
