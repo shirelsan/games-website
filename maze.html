@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Escape | GameZone</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css"> <!-- Base styles -->
+    <link rel="stylesheet" href="css/maze.css">  <!-- Game specific styles -->
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- Header (Same as Home)
+    <header class="site-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <a href="index.html">
+                    <img src="images/logo.png" alt="GameZone Logo">
+                </a>
+            </div>
+            <div class="header-controls">
+                <a href="index.html" class="btn-login" style="background: #e0e0e0; color: #333;">חזרה לבית</a>
+            </div>
+        </div>
+    </header> -->
+
+    <header>
+        <h1 class="game-title">הבריחה מהמבוך</h1>
+    </header>
+
+    <main class="game-wrapper">        
+        <!-- Game UI Panel -->
+        <div class="game-ui">
+            <div class="score-board">
+                <div class="stat">
+                    <span>נקודות:</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="stat">
+                    <span>רמה:</span>
+                    <span id="levelDisplay">1</span>
+                </div>
+            </div>
+            
+            <div class="difficulty-selector" id="difficultyScreen">
+                <h3>בחר רמת קושי:</h3>
+                <div class="buttons-row">
+                    <button class="diff-btn easy" onclick="startGame('easy')">קל</button>
+                    <button class="diff-btn medium" onclick="startGame('medium')">בינוני</button>
+                    <button class="diff-btn hard" onclick="startGame('hard')">קשה</button>
+                </div>
+            </div>
+
+            <div class="game-controls" id="gameControls" style="display: none;">
+                <button onclick="restartLevel()" class="control-btn">נסה שוב</button>
+                <button onclick="quitGame()" class="control-btn danger">יציאה</button>
+            </div>
+        </div>
+
+        <!-- The Game Area -->
+        <div id="gameContainer" class="game-container">
+            <!-- Game elements will be injected here by JS -->
+            <div id="player" class="player"></div>
+            <!-- Walls, Enemies, Coins, Exit will be created via JS -->
+            
+            <!-- Messages Overlay -->
+            <div id="messageOverlay" class="overlay hidden">
+                <h2 id="overlayTitle"></h2>
+                <p id="overlayText"></p>
+                <button id="overlayBtn" onclick="nextLevel()">המשך</button>
+            </div>
+        </div>
+        
+        <p class="instructions">השתמשו בחיצים במקלדת כדי לזוז. איספו מטבעות והגיעו לדלת הירוקה!</p>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>© 2025 Fun&Games Website. All rights reserved</p>
+        <div class="follow-us">
+            <span>Follow us on</span>
+
+            <div class="social-icons">
+                <a href="https://www.instagram.com" target="_blank">
+                    <img src="images/instagram.png" alt="Instagram">
+                </a>
+                <a href="https://www.facebook.com" target="_blank">
+                    <img src="images/facebook.png" alt="Facebook">
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>lucide.createIcons();</script>
+    <script src="js/maze.js"></script>
+</body>
+</html>

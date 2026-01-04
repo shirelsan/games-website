@@ -1,18 +1,17 @@
 /* --- Design System --- */
 :root {
-    /* Brand Colors - Adjusted to Green & Orange Logo Scheme */
-    --primary: #2ECC71;   /* Vibrant Green (Main Brand Color) */
+    /* Brand Colors */
+    --primary: #2ECC71;   /* Vibrant Green */
     --primary-hover: #27ae60;
     
     --accent: #FF8c00;    /* Deep Orange */
-    --accent-light: #FFA500; /* Lighter Orange */
+    --accent-light: #FFA500;
     
-    --secondary: #F1C40F; /* Sunny Yellow (Complimentary) */
+    --secondary: #F1C40F; /* Sunny Yellow */
     
     /* Backgrounds */
-    --bg-body: #F9FAFB;   /* Very clean, almost white background */
+    --bg-body: #F9FAFB;
     --glass-bg: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(46, 204, 113, 0.2); /* Slight green tint on borders */
     
     /* Text */
     --text-dark: #2D3436;
@@ -25,39 +24,12 @@
     --radius-lg: 24px;
 }
 
-/* --- Reset & Base --- */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
-    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Rubik', sans-serif; /* ברירת מחדל */
     background-color: var(--bg-body);
-    color: #2D3436;
-    overflow-x: hidden;
-    position: relative;
-    /* Subtle geometric pattern */
-    background-image: radial-gradient(var(--primary) 1px, transparent 1px);
-    background-size: 30px 30px;
-    background-position: 0 0, 15px 15px;
-    background-attachment: fixed;
-}
-
-a { text-decoration: none; color: inherit; }
-
-/* --- Floating Background Blobs ---
-.blob {
-    position: absolute;
-    filter: blur(90px);
-    z-index: -1;
-    opacity: 0.5;
-    animation: float 12s infinite alternate;
-}
-
-.blob-1 { top: -15%; right: -10%; width: 600px; height: 600px; background: var(--primary); opacity: 0.15; }
-.blob-2 { bottom: 5%; left: -10%; width: 500px; height: 500px; background: var(--accent); opacity: 0.15; animation-delay: -5s; } */
-
-@keyframes float {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(40px, 60px); }
+    color: var(--text-dark);
 }
 
 /* --- Floating Glass Header --- */
@@ -76,17 +48,16 @@ a { text-decoration: none; color: inherit; }
     border-radius: 100px;
     display: flex;
     align-items: center;
-    justify-content: center;
     padding: 0 30px;
     z-index: 1000;
-    box-shadow: 0 10px 40px rgba(46, 204, 113, 0.1); /* Greenish shadow */
+    box-shadow: 0 10px 40px rgba(46, 204, 113, 0.1);
     transition: all 0.3s ease;
 }
 
 .site-header.scrolled {
     top: 10px;
     width: 95%;
-    box-shadow: 0 30px 45x rgba(0,0,0,0.1);
+    box-shadow: 0 30px 45px rgba(0,0,0,0.1);
 }
 
 .header-content {
@@ -116,8 +87,7 @@ a { text-decoration: none; color: inherit; }
     transform: rotate(-5deg) scale(1.1);
 }
 
-
-/* Left Controls (Login/User) */
+/* --- Left Controls (Login / User Profile) --- */
 .header-controls {
     position: absolute;
     left: 0;
@@ -133,6 +103,7 @@ a { text-decoration: none; color: inherit; }
     border-radius: 50px;
     font-weight: 700;
     font-size: 0.95rem;
+    text-decoration: none;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 4px 15px rgba(22, 97, 53, 0.3);
 }
@@ -142,29 +113,60 @@ a { text-decoration: none; color: inherit; }
     box-shadow: 0 8px 25px rgba(13, 50, 29, 0.5);
 }
 
+/* --- New Profile & Avatar Styles --- */
+
+.user-profile-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.user-profile-link:hover {
+    transform: scale(1.05);
+}
+
+.nav-username {
+    font-weight: 700;
+    font-size: 1.1rem;
+    font-family: 'Fredoka', sans-serif;
+}
+
+/* מיכל האווטאר הראשי */
 .user-avatar {
-    background: transparent;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    height: 60px;
-    width: 60px;
+    width: 45px;
+    height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     transition: 0.3s;
 }
 
+/* מצב 1: תמונה (כשמחוברים) */
 .user-avatar img {
-    height: 40px;
-    width:auto;
-    transition: transform 0.3s;
-
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--text-dark); /* מסגרת שחורה */
+    background: #fff;
+    object-fit: cover;
 }
 
-.user-avatar:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(13, 50, 29, 0.5);
+/* מצב 2: רוח רפאים (אורח) */
+.user-avatar.guest {
+    border: 2px solid var(--text-dark);
+    border-radius: 50%;
+    background: #F0F2F5; /* רקע אפור בהיר */
+}
+
+/* עיצוב האייקון של הרוח בהדר */
+.ghost-icon-header {
+    width: 24px;
+    height: 24px;
+    color: var(--text-dark);
 }
 
 /* --- Intro Banner --- */
@@ -184,11 +186,11 @@ a { text-decoration: none; color: inherit; }
     font-family: 'Fredoka', sans-serif;
     font-size: 4rem;
     margin-bottom: 20px;
-    color: #2D3436;
+    color: var(--text-dark);
 }
 
 .highlight-h1 {
-    color: #2ECC71;
+    color: var(--primary);
     position: relative;
     white-space: nowrap;
 }
@@ -200,7 +202,7 @@ a { text-decoration: none; color: inherit; }
     left: 0;
     width: 100%;
     height: 15px;
-    background: #FFA500;
+    background: var(--accent-light);
     z-index: -1;
     border-radius: 4px;
     transform: rotate(-2deg);
@@ -209,7 +211,7 @@ a { text-decoration: none; color: inherit; }
 
 .intro-text p {
     font-size: 1.25rem;
-    color: #636e72;
+    color: var(--text-gray);
     margin-bottom: 2.5rem;
     line-height: 1.6;
     max-width: 500px;
@@ -223,13 +225,13 @@ a { text-decoration: none; color: inherit; }
 
 .stat-item h3 { 
     font-size: 2rem; 
-    color: #2D3436; 
+    color: var(--text-dark); 
     font-family: 'Fredoka', sans-serif; 
 }
 
 .stat-item span { 
     font-size: 1rem; 
-    color: #636e72; 
+    color: var(--text-gray); 
     font-weight: 500; 
 }
 
@@ -237,13 +239,13 @@ a { text-decoration: none; color: inherit; }
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: #FF8c00;
-    background: linear-gradient(45deg, #FF8c00, #FFA500);
+    background: linear-gradient(45deg, var(--accent), var(--accent-light));
     color: white; 
     padding: 16px 45px; 
     border-radius: 100px; 
     font-weight: 700; 
     font-size: 1.1rem;
+    text-decoration: none;
     box-shadow: 0 10px 25px rgba(255, 140, 0, 0.4); 
     transition: all 0.3s;
 }
@@ -256,7 +258,6 @@ a { text-decoration: none; color: inherit; }
 .intro-visual {
     position: relative;
     height: 480px;
-    /* Light Green/Orange Gradient Background for visual area */
     background: linear-gradient(135deg, #e8f8f5 0%, #fff5e6 100%);
     border-radius: var(--radius-xl);
     display: flex;
@@ -273,9 +274,9 @@ a { text-decoration: none; color: inherit; }
     animation: bounce 4s infinite ease-in-out;
 }
 
-/* Icons adjusted to Green/Orange/Yellow */
+/* Icons adjusted */
 .icon-1 { top: 15%; left: 15%; color: var(--primary); width: 100px; height: 100px; animation-delay: 0s; transform: rotate(-10deg); }
-.icon-2 { bottom: 15%; right: 15%; color: #FF8c00; width: 80px; height: 80px; animation-delay: 1.5s; transform: rotate(10deg); }
+.icon-2 { bottom: 15%; right: 15%; color: var(--accent); width: 80px; height: 80px; animation-delay: 1.5s; transform: rotate(10deg); }
 .icon-3 { top: 45%; right: 10%; color: var(--secondary); width: 60px; height: 60px; animation-delay: 0.8s; opacity: 0.8; }
 .icon-4 { bottom: 30%; left: 20%; color: #333; width: 40px; height: 40px; opacity: 0.2; }
 
@@ -303,6 +304,7 @@ a { text-decoration: none; color: inherit; }
     font-size: 2.5rem;
     position: relative;
     padding-right: 20px;
+    color: var(--text-dark);
 }
 
 .section-title::before {
@@ -312,22 +314,9 @@ a { text-decoration: none; color: inherit; }
     top: 10%;
     height: 80%;
     width: 6px;
-    background: #FF8c00;
+    background: var(--accent);
     border-radius: 10px;
 }
-
-.view-all {
-    font-weight: 700;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: gap 0.2s;
-    padding: 10px 20px;
-    background: rgba(46, 204, 113, 0.1);
-    border-radius: 50px;
-}
-.view-all:hover { gap: 12px; background: rgba(46, 204, 113, 0.2); }
 
 .games-grid {
     display: grid;
@@ -352,47 +341,29 @@ a { text-decoration: none; color: inherit; }
 
 .game-card:hover {
     transform: translateY(-12px);
-    box-shadow: 0 25px 50px rgba(46, 204, 113, 0.15); /* Green shadow on hover */
+    box-shadow: 0 25px 50px rgba(46, 204, 113, 0.15);
     border-color: var(--primary);
-}
-
-.card-image {
-    height: 200px;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
 }
 
 .game-card img {
     transition: transform 0.5s;
-    background-color: #2D3436;
+    background-color: var(--text-dark);
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
-    width: 200px;
+    width: 300px;
     height: auto;
+    max-height: 200px;
+    border-radius: 10px;
 }
-
-.game-card:hover .card-image i {
-    transform: scale(1.25) rotate(12deg);
-}
-
-/* Gradient Backgrounds */
-.bg-green { background: linear-gradient(135deg, #2ecc71 0%, #00b894 100%); }
-.bg-orange { background: linear-gradient(135deg, #ff9f43 0%, #ff6b6b 100%); }
-.bg-yellow { background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%); }
-.bg-dark { background: linear-gradient(135deg, #2d3436 0%, #636e72 100%); }
 
 .card-content h3 {
     font-family: 'Fredoka', sans-serif;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    color: #2D3436;
+    color: var(--text-dark);
 }
 
 .card-content p {
-    color: #636e72;
+    color: var(--text-gray);
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 1rem;
@@ -406,13 +377,14 @@ a { text-decoration: none; color: inherit; }
     border: 2px solid #EEE;
     background: transparent;
     font-weight: 700;
-    color: #2D3436;
+    color: var(--text-dark);
     text-align: center;
     transition: 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+    text-decoration: none;
 }
 
 .game-card:hover .play-button {
@@ -421,12 +393,10 @@ a { text-decoration: none; color: inherit; }
     border-color: var(--primary);
 }
 
-
-
 /* --- Footer --- */
 .site-footer {
-    background-color: var(--color-navy);
-    color: var(--text-light);
+    background-color: var(--text-dark); /* Navy substitute */
+    color: white;
     padding: 15px 0;
     text-align: center;
     width: 100%;
@@ -462,33 +432,21 @@ a { text-decoration: none; color: inherit; }
     transform: scale(1.2);
 }
 
-/* התאמה למובייל */
+/* Responsive */
+@media (max-width: 900px) {
+    .intro-section { grid-template-columns: 1fr; text-align: center; gap: 3rem; padding-top: 0; margin-top: 120px; }
+    .intro-text p, .intro-stats { margin-left: auto; margin-right: auto; justify-content: center; }
+    .header-controls { position: relative; left: auto; }
+    .site-header { padding: 0 20px; justify-content: space-between; width: 95%; }
+    .header-content { justify-content: space-between; }
+    .logo-section { padding: 0; }
+    .intro-visual { height: 350px; }
+}
+
 @media (max-width: 600px) {
     .site-header {
         flex-direction: column-reverse;
         gap: 10px;
         padding: 15px;
     }
-    .header-right {
-        flex-direction: column;
-    }
-    .main-nav {
-        border-right: none;
-        padding-right: 0;
-    }
-}
-
-
-
-
-/* Responsive */
-@media (max-width: 900px) {
-    .hero-section { grid-template-columns: 1fr; text-align: center; gap: 3rem; padding-top: 0; margin-top: 120px; }
-    .hero-text p, .hero-stats { margin-left: auto; margin-right: auto; justify-content: center; }
-    .header-controls { position: relative; left: auto; }
-    .site-header { padding: 0 20px; justify-content: space-between; width: 95%; }
-    .site-title { display: none; }
-    .header-content { justify-content: space-between; }
-    .logo-section { padding: 0; }
-    .hero-visual { height: 350px; }
 }
