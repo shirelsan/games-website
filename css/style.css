@@ -10,45 +10,55 @@
 
 /* --- הגדרות בסיס --- */
 * {
-    box-sizing: border-box;
     margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0; 
+    box-sizing: border-box;
 }
 
 body {
-    background-color: var(--bg-color);
-    background-image: radial-gradient(circle at center, #e1bee7 0%, #f0f4f8 70%);
-    direction: rtl;
+    font-family: 'Rubik', sans-serif;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    background-color: #F9FAFB;
+    color: #2D3436;
+    overflow-x: hidden;
+    position: relative;
+    /* Subtle geometric pattern */
+    /* background-image:
+        radial-gradient(rgba(46, 204, 113, 0.45) 2px, transparent 1px),
+        radial-gradient(rgba(74, 17, 121, 0.2) 2.5px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: 0 0, 16px 16px;
+    background-attachment: fixed; */
+
+    background-image:
+        linear-gradient(rgba(112, 46, 204, 0.06) 3px, transparent 1px),
+        linear-gradient(90deg, rgba(128, 46, 204, 0.06) 3px, transparent 1px);
+    background-size: 30px 30px;
+    background-attachment: fixed;
 }
 
-
+a { 
+    text-decoration: none; 
+    color: inherit; 
+}
 
 /* --- Footer --- */
 .site-footer {
-    background-color: var(--color-navy);
-    color: var(--text-light);
-    padding: 15px 0;
+    margin-top: 5rem;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding: 2rem 0;
+    background: #1A1A2E;
     text-align: center;
-    width: 100%;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
-    margin-top: auto;
-}
-
-.site-footer p {
-    margin-bottom: 10px;
-    font-size: 0.9rem;
+    color: white;
 }
 
 .follow-us {
+    direction: ltr;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
 }
 
 .social-icons {
@@ -64,6 +74,12 @@ body {
 
 .social-icons a img:hover {
     transform: scale(1.2);
+}
+
+
+.site-footer p {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
 }
 
 /* התאמה למובייל */
