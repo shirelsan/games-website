@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הפרופיל שלי - GameZone</title>
+    
+    <link rel="stylesheet" href="css/profile.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="index.html" class="btn-action btn-home">
+            <i data-lucide="home"></i> דף הבית
+        </a>
+        
+        <button id="logoutBtn" class="btn-action btn-logout" style="display: none;">
+            <i data-lucide="log-out"></i> התנתק
+        </button>
+    </header>
+
+    <div class="animated-background"> 
+        <ul class="circles">
+            <li></li> <li></li> <li></li> <li></li> <li></li>
+            <li></li> <li></li> <li></li> <li></li> <li></li>
+        </ul>
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            
+            <div id="loggedInView" style="display: none;">
+                
+                <div class="profile-header">
+                    <div class="avatar-container">
+                        <img src="" alt="Avatar" id="userAvatar">
+                        <div class="rank-badge" id="rankBadge">טירון 🐣</div>
+                    </div>
+                    
+                    <div class="user-info">
+                        <h1 id="displayName">שם משתמש</h1>
+                        <p class="username">@<span id="displayUsername">username</span></p>
+                        <p class="join-date">הצטרף ב: <span id="joinDate"></span></p>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="stats-grid">
+                    <div class="stat-box yellow">
+                        <i data-lucide="trophy" class="stat-icon"></i>
+                        <div class="stat-value" id="totalScore">0</div>
+                        <div class="stat-label">סה"כ נקודות</div>
+                    </div>
+                    <div class="stat-box orange">
+                        <i data-lucide="gamepad-2" class="stat-icon"></i>
+                        <div class="stat-value" id="gamesPlayed">0</div>
+                        <div class="stat-label">משחקים</div>
+                    </div>
+                    <div class="stat-box green">
+                        <i data-lucide="star" class="stat-icon"></i>
+                        <div class="stat-value" id="highestLevel">1</div>
+                        <div class="stat-label">שיא רמה</div>
+                    </div>
+                </div>
+
+                <div class="games-history-section">
+                    <h2>🏆 השיאים שלי</h2>
+                    <div class="history-list" id="scoresList">
+                        </div>
+                </div>
+            </div>
+
+            <div id="guestView" style="display: none;">
+                
+                <div class="guest-layout">
+                    <div class="guest-icon-wrapper">
+                        <i data-lucide="ghost" class="guest-icon"></i>
+                    </div>
+                    
+                    <div class="guest-content-card">
+                        <h1 class="guest-title">אופס! מי אתה? 🤔</h1>
+                        <p class="guest-text">
+                            כדי לשמור נקודות, לראות שיאים ולטפס בדרגות -
+                            <strong>חייבים להירשם!</strong>
+                        </p>
+                        
+                        <div class="guest-buttons">
+                            <a href="LOGIN.html" class="btn btn-register-now">יאללה, תרשמו אותי! 🚀</a>
+                            <a href="LOGIN.html" class="btn btn-login-now">יש לי כבר משתמש</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>lucide.createIcons();</script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

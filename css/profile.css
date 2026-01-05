@@ -1,0 +1,224 @@
+/* css/profile.css - עיצוב סופי למצב דיאלוג */
+
+:root {
+    --primary: #2ECC71;       /* ירוק */
+    --accent: #FF8c00;        /* כתום */
+    --accent-light: #FFA500;
+    --secondary: #F1C40F;     /* צהוב */
+    
+    --bg-body: #F9FAFB;
+    --text-dark: #2D3436;
+    --text-gray: #636e72;
+    
+    --border-black: 3px solid #2D3436;
+    --shadow-hard: 6px 6px 0px #000000;
+}
+
+body {
+    margin: 0; padding: 0;
+    font-family: 'Fredoka', 'Segoe UI', sans-serif;
+    color: var(--text-dark);
+    overflow-x: hidden;
+    background-color: var(--bg-body);
+}
+
+/* --- רקע אנימציה --- */
+.animated-background {
+    background-color: var(--bg-body);
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.04) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 2px, transparent 2px);
+    background-size: 50px 50px;
+    width: 100%; height: 100vh; position: fixed; top: 0; left: 0; z-index: -1;
+}
+
+.circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0; }
+.circles li {
+    position: absolute; display: block; list-style: none;
+    width: 20px; height: 20px; background: rgba(46, 204, 113, 0.4);
+    animation: animate 25s linear infinite; bottom: -150px;
+    border: 2px solid rgba(0,0,0,0.1);
+}
+.circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; background: rgba(255, 140, 0, 0.6); animation-delay: 0s; }
+.circles li:nth-child(2) { left: 10%; width: 30px; height: 30px; background: rgba(46, 204, 113, 0.6); animation-delay: 2s; border-radius: 50%; }
+.circles li:nth-child(3) { left: 70%; width: 40px; height: 40px; background: rgba(241, 196, 15, 0.6); animation-delay: 4s; }
+.circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; background: rgba(255, 165, 0, 0.6); animation-delay: 0s; animation-duration: 18s; }
+.circles li:nth-child(5) { left: 65%; width: 25px; height: 25px; background: rgba(46, 204, 113, 0.6); animation-delay: 0s; }
+
+@keyframes animate {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+}
+
+/* --- כפתורים עליונים (Header) --- */
+.site-header {
+    position: absolute; top: 20px; left: 0; width: 100%; z-index: 100;
+    display: flex; justify-content: space-between; /* כפתורים בקצוות */
+    padding: 0 40px; box-sizing: border-box;
+}
+
+.btn-action {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; border: none; cursor: pointer;
+    font-weight: 800; font-size: 1rem; font-family: inherit;
+    padding: 10px 24px; border-radius: 50px;
+    border: var(--border-black);
+    box-shadow: 4px 4px 0px #000000;
+    transition: all 0.2s;
+}
+.btn-home { background-color: var(--secondary); color: var(--text-dark); }
+.btn-logout { background-color: #ff7675; color: white; }
+.btn-action:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #000000; }
+
+/* --- כרטיס הפרופיל --- */
+.profile-container {
+    min-height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    padding: 80px 20px;
+}
+
+.profile-card {
+    background: white;
+    width: 100%; max-width: 700px;
+    border-radius: 32px;
+    padding: 40px;
+    border: var(--border-black);
+    box-shadow: 10px 10px 0px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: visible;
+}
+
+/* --- מצב מחובר (Logged In) --- */
+.profile-header { display: flex; align-items: center; gap: 30px; margin-bottom: 30px; }
+.avatar-container { position: relative; }
+.avatar-container img {
+    width: 100px; height: 100px; border-radius: 50%;
+    border: var(--border-black); background-color: #ffeaa7;
+}
+.rank-badge {
+    position: absolute; bottom: -5px; right: -10px;
+    background-color: var(--primary); color: white;
+    font-weight: bold; font-size: 0.9rem; padding: 5px 12px;
+    border-radius: 20px; border: 2px solid #2D3436;
+    transform: rotate(-5deg); box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+.user-info h1 { margin: 0; font-size: 2rem; color: var(--text-dark); }
+.username { color: var(--text-gray); margin: 5px 0; font-weight: 600; font-size: 1.1rem; }
+.join-date { font-size: 0.9rem; color: #a0a0a0; margin-top: 5px; }
+
+.divider { border: 0; border-top: 3px dashed #eee; margin: 25px 0; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+.stat-box {
+    padding: 20px; border-radius: 20px; border: var(--border-black);
+    text-align: center; position: relative;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.05); transition: transform 0.2s;
+}
+.stat-box:hover { transform: translateY(-5px); }
+.stat-box.yellow { background-color: #fff9c4; }
+.stat-box.orange { background-color: #ffccbc; }
+.stat-box.green { background-color: #c8e6c9; }
+.stat-value { font-size: 2rem; font-weight: 800; color: var(--text-dark); margin: 5px 0; }
+.stat-label { font-size: 0.9rem; font-weight: 600; color: var(--text-gray); }
+
+.games-history-section h2 { font-size: 1.5rem; margin-bottom: 15px; }
+.history-list { display: flex; flex-direction: column; gap: 15px; }
+.game-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 20px; background-color: #f8f9fa;
+    border-radius: 16px; border: 2px solid #eee; transition: 0.2s;
+}
+.game-item:hover { border-color: var(--text-dark); background-color: white; transform: scale(1.01); box-shadow: 3px 3px 0 rgba(0,0,0,0.1); }
+.game-info { display: flex; align-items: center; gap: 15px; }
+.game-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid #2D3436; }
+.game-name { font-weight: 700; font-size: 1.1rem; }
+.game-score { font-weight: 800; font-size: 1.2rem; color: var(--accent); }
+.empty-state { text-align: center; color: #aaa; padding: 20px; font-style: italic; }
+
+/* ========================================= */
+/* עיצוב למצב אורח (Guest View) - גרסת דיאלוג */
+/* ========================================= */
+
+.guest-layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 25px;
+    max-width: 600px; margin: 0 auto; padding-top: 20px;
+}
+
+/* 1. הרוח */
+.guest-icon-wrapper {
+    background-color: #F0F2F5;
+    width: 100px; height: 100px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: var(--border-black); box-shadow: 4px 4px 0px #000000;
+    animation: ghostFloat 3s ease-in-out infinite;
+    position: relative; z-index: 2;
+}
+
+@keyframes ghostFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.guest-icon { width: 55px; height: 55px; color: var(--text-dark); }
+
+/* 2. בועת הטקסט */
+.guest-content-card {
+    background-color: #fff8e1;
+    border: var(--border-black);
+    border-radius: 20px; padding: 30px;
+    text-align: right;
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
+    position: relative; flex-grow: 1;
+}
+
+/* המשולש (שפיץ) שפונה ימינה */
+.guest-content-card::before {
+    content: ''; position: absolute; top: 30px; right: -23px;
+    border-width: 12px; border-style: solid;
+    border-color: transparent transparent transparent #2D3436;
+}
+.guest-content-card::after {
+    content: ''; position: absolute; top: 30px; right: -17px;
+    border-width: 12px; border-style: solid;
+    border-color: transparent transparent transparent #fff8e1;
+}
+
+.guest-title { font-size: 1.8rem; font-weight: 800; margin: 0 0 15px 0; line-height: 1.2; }
+.guest-text { font-size: 1.1rem; margin-bottom: 25px; line-height: 1.5; color: var(--text-dark); }
+
+.guest-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+.btn {
+    flex: 1; text-align: center; padding: 12px;
+    border-radius: 50px; text-decoration: none;
+    font-weight: 800; font-size: 1rem;
+    transition: all 0.2s; white-space: nowrap;
+    border: var(--border-black);
+}
+.btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #000000; }
+.btn-register-now { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; box-shadow: 4px 4px 0px #000000; }
+.btn-login-now { background: white; color: var(--text-dark); box-shadow: 4px 4px 0px rgba(0,0,0,0.1); }
+
+/* מובייל */
+@media (max-width: 650px) {
+    .site-header { padding: 0 20px; }
+    .profile-header { flex-direction: column; text-align: center; }
+    .stats-grid { grid-template-columns: 1fr; }
+    
+    .guest-layout { flex-direction: column; align-items: center; gap: 20px; }
+    .guest-content-card { text-align: center; width: 100%; }
+    
+    /* במובייל השפיץ למעלה */
+    .guest-content-card::before {
+        top: -24px; right: 50%; transform: translateX(50%);
+        border-color: transparent transparent #2D3436 transparent;
+    }
+    .guest-content-card::after {
+        top: -17px; right: 50%; transform: translateX(50%);
+        border-color: transparent transparent #fff8e1 transparent;
+    }
+    .guest-buttons { flex-direction: column; }
+}

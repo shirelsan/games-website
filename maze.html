@@ -5,36 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maze Escape | GameZone</title>
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/style.css"> <!-- Base styles -->
-    <link rel="stylesheet" href="css/maze.css">  <!-- Game specific styles -->
-    
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css"> <link rel="stylesheet" href="css/maze.css">  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
-    <!-- Header (Same as Home)
-    <header class="site-header">
-        <div class="header-content">
-            <div class="logo-section">
-                <a href="index.html">
-                    <img src="images/logo.png" alt="GameZone Logo">
-                </a>
-            </div>
-            <div class="header-controls">
-                <a href="index.html" class="btn-login" style="background: #e0e0e0; color: #333;">חזרה לבית</a>
-            </div>
+    <header class="game-header-container">
+        <div class="top-right-controls">
+            <a href="index.html" class="btn-home">
+                <i data-lucide="home"></i>חזרה לעמוד הבית</a>
         </div>
-    </header> -->
 
-    <header>
         <h1 class="game-title">הבריחה מהמבוך</h1>
+        
+        <p class="instructions">השתמשו בחיצים במקלדת כדי לזוז. איספו מטבעות והגיעו לדלת הירוקה!</p>
     </header>
 
     <main class="game-wrapper">        
-        <!-- Game UI Panel -->
         <div class="game-ui">
             <div class="score-board">
                 <div class="stat">
@@ -62,41 +49,27 @@
             </div>
         </div>
 
-        <!-- The Game Area -->
         <div id="gameContainer" class="game-container">
-            <!-- Game elements will be injected here by JS -->
             <div id="player" class="player"></div>
-            <!-- Walls, Enemies, Coins, Exit will be created via JS -->
-            
-            <!-- Messages Overlay -->
             <div id="messageOverlay" class="overlay hidden">
                 <h2 id="overlayTitle"></h2>
                 <p id="overlayText"></p>
                 <button id="overlayBtn" onclick="nextLevel()">המשך</button>
             </div>
         </div>
-        
-        <p class="instructions">השתמשו בחיצים במקלדת כדי לזוז. איספו מטבעות והגיעו לדלת הירוקה!</p>
     </main>
 
-    <!-- Footer -->
     <footer class="site-footer">
         <p>© 2025 Fun&Games Website. All rights reserved</p>
         <div class="follow-us">
             <span>Follow us on</span>
-
             <div class="social-icons">
-                <a href="https://www.instagram.com" target="_blank">
-                    <img src="images/instagram.png" alt="Instagram">
-                </a>
-                <a href="https://www.facebook.com" target="_blank">
-                    <img src="images/facebook.png" alt="Facebook">
-                </a>
+                <a href="#" target="_blank"><img src="images/instagram.png" alt="Instagram"></a>
+                <a href="#" target="_blank"><img src="images/facebook.png" alt="Facebook"></a>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script>lucide.createIcons();</script>
     <script src="js/maze.js"></script>
 </body>

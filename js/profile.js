@@ -3,66 +3,135 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initUserProfile() {
-    const avatarBtn = document.querySelector('.user-avatar');
-    const popup = document.getElementById('userProfilePopup');
-    
-    // 1. Check if user is logged in
+    // 1. תפיסת האלמנטים של העמוד החדש
+    const loggedInView = document.getElementById('loggedInView');
+    const guestView = document.getElementById('guestView');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // 2. בדיקה אם יש משתמש מחובר
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    // If no user is connected, clicking avatar redirects to login
     if (!currentUser) {
-        avatarBtn.addEventListener('click', () => {
-            window.location.href = 'login.html';
-        });
-        return; // Stop here, don't setup the popup
+        // --- מצב אורח (לפי הלוגיקה שלך: אם אין משתמש, מציגים מסך מתאים) ---
+        if (guestView) guestView.style.display = 'block';
+        if (loggedInView) loggedInView.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        return; // עוצרים כאן
     }
 
-    // 2. If user is connected, setup the popup logic
-    
-    // Populate data
+    // 3. אם יש משתמש - מפעילים את לוגיקת הפרופיל
+    if (guestView) guestView.style.display = 'none';
+    if (loggedInView) loggedInView.style.display = 'block';
+    if (logoutBtn) logoutBtn.style.display = 'flex';
+
+    // הפעלת עדכון הנתונים
     updateProfileUI(currentUser);
 
-    // Toggle popup on avatar click
-    avatarBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent immediate closing
-        popup.classList.toggle('hidden');
-    });
-
-    // Close popup when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!popup.contains(e.target) && !avatarBtn.contains(e.target)) {
-            popup.classList.add('hidden');
-        }
-    });
-
-    // Logout logic
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+    // לוגיקת התנתקות
+    logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('currentUser');
-        window.location.reload(); // Refresh to update UI state
+        window.location.href = 'index.html'; // חזרה לדף הבית
     });
 }
 
 function updateProfileUI(user) {
-    // DOM Elements
-    const nameEl = document.getElementById('profileName');
-    const pointsEl = document.getElementById('profilePoints');
-    const medalsEl = document.getElementById('profileMedals');
+    // --- מילוי פרטים בסיסיים ---
+    const nameEl = document.getElementById('displayName');
+    const usernameEl = document.getElementById('displayUsername');
+    const dateEl = document.getElementById('joinDate');
+    const avatarEl = document.getElementById('userAvatar');
 
-    // Set Name
     nameEl.textContent = user.name || user.username;
-
-    // Calculate Points (Sum of high scores)
-    let totalPoints = 0;
-    if (user.highScores && Array.isArray(user.highScores)) {
-        totalPoints = user.highScores.reduce((sum, score) => sum + score, 0);
-    }
-    pointsEl.textContent = totalPoints;
-
-    // Calculate Medals (Logic: 1 medal for every 500 points, or specific tiers)
-    let medals = '🌱 מתחיל';
-    if (totalPoints > 1000) medals = '🥇 זהב';
-    else if (totalPoints > 500) medals = '🥈 כסף';
-    else if (totalPoints > 100) medals = '🥉 ארד';
+    usernameEl.textContent = user.username;
     
-    medalsEl.textContent = medals;
+    // תאריך (אם אין, נשתמש בהיום)
+    const joinDate = user.joinDate || new Date().toLocaleDateString('he-IL');
+    dateEl.textContent = joinDate;
+
+    // אווטאר
+    if (avatarEl) {
+        avatarEl.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}&backgroundColor=c0aede`;
+    }
+
+    // --- חישוב נקודות וסטטיסטיקה (הלוגיקה שלך) ---
+    const pointsEl = document.getElementById('totalScore');
+    const gamesEl = document.getElementById('gamesPlayed');
+    const levelEl = document.getElementById('highestLevel');
+    const rankEl = document.getElementById('rankBadge');
+
+    let totalPoints = 0;
+    let maxLevel = 1;
+    let gamesCount = 0;
+    let history = user.highScores || []; // מוודאים שיש מערך
+
+    if (Array.isArray(history) && history.length > 0) {
+        gamesCount = history.length;
+        
+        // סיכום נקודות
+        totalPoints = history.reduce((sum, game) => {
+            // טיפול במקרה שהניקוד נשמר כאובייקט או כמספר
+            const scoreVal = typeof game === 'object' ? parseInt(game.score) : parseInt(game);
+            
+            // בדיקת רמה מקסימלית על הדרך
+            if (game.level && parseInt(game.level) > maxLevel) {
+                maxLevel = game.level;
+            }
+            
+            return sum + (isNaN(scoreVal) ? 0 : scoreVal);
+        }, 0);
+    }
+
+    // הצגת הנתונים
+    pointsEl.textContent = totalPoints;
+    gamesEl.textContent = gamesCount;
+    levelEl.textContent = maxLevel;
+
+    // --- חישוב מדליות/דרגות (הלוגיקה שלך) ---
+    let medals = '🌱 מתחיל';
+    
+    if (totalPoints > 1000) {
+        medals = '🥇 גיימר זהב';
+        rankEl.style.backgroundColor = '#f1c40f'; // צבע זהב
+        rankEl.style.color = '#000';
+    } 
+    else if (totalPoints > 500) {
+        medals = '🥈 גיימר כסף';
+        rankEl.style.backgroundColor = '#bdc3c7'; // צבע כסף
+    } 
+    else if (totalPoints > 100) {
+        medals = '🥉 גיימר ארד';
+        rankEl.style.backgroundColor = '#e67e22'; // צבע ברונזה
+    }
+    
+    rankEl.textContent = medals;
+
+    // --- בניית רשימת ההיסטוריה (תוספת ויזואלית) ---
+    const listContainer = document.getElementById('scoresList');
+    if (listContainer) {
+        if (gamesCount > 0) {
+            listContainer.innerHTML = ''; 
+            // מציגים מהסוף להתחלה (הכי חדש למעלה)
+            history.slice().reverse().forEach(game => {
+                const gameName = game.gameName || 'משחק';
+                const scoreVal = game.score || game;
+                const dateVal = game.date || 'לאחרונה';
+                
+                const html = `
+                    <div class="game-item">
+                        <div class="game-info">
+                            <div class="game-icon" style="background-color: #ffeaa7">🎮</div>
+                            <div>
+                                <div class="game-name">${gameName}</div>
+                                <div class="game-date">${dateVal}</div>
+                            </div>
+                        </div>
+                        <div class="game-score">${scoreVal} נק'</div>
+                    </div>
+                `;
+                listContainer.innerHTML += html;
+            });
+        } else {
+            listContainer.innerHTML = '<div class="empty-state">עדיין לא שיחקת במשחקים... קדימה לשחק! 🎮</div>';
+        }
+    }
 }

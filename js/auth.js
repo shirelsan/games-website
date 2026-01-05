@@ -130,7 +130,12 @@ function handleLogin(event) {
     if (user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
         showMessage("התחברת בהצלחה! ברוך הבא " + user.name, "success");
-        // כאן תהיה הפניה לדף הבא בעתיד
+        
+        // --- התיקון כאן: מעבר לעמוד הבית אחרי 1.5 שניות ---
+        setTimeout(() => {
+            window.location.href = "index.html"; 
+        }, 1500);
+
     } else {
         showMessage("שם משתמש או סיסמה שגויים", "error");
     }
