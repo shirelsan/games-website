@@ -3,39 +3,33 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initUserProfile() {
-    // 1. תפיסת האלמנטים של העמוד החדש
     const loggedInView = document.getElementById('loggedInView');
     const guestView = document.getElementById('guestView');
     const logoutBtn = document.getElementById('logoutBtn');
 
-    // 2. בדיקה אם יש משתמש מחובר
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = getCookie('currentUser');
 
     if (!currentUser) {
-        // --- מצב אורח (לפי הלוגיקה שלך: אם אין משתמש, מציגים מסך מתאים) ---
         if (guestView) guestView.style.display = 'block';
         if (loggedInView) loggedInView.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'none';
-        return; // עוצרים כאן
+        return; 
     }
 
-    // 3. אם יש משתמש - מפעילים את לוגיקת הפרופיל
     if (guestView) guestView.style.display = 'none';
     if (loggedInView) loggedInView.style.display = 'block';
     if (logoutBtn) logoutBtn.style.display = 'flex';
 
-    // הפעלת עדכון הנתונים
     updateProfileUI(currentUser);
 
-    // לוגיקת התנתקות
     logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('currentUser');
-        window.location.href = 'index.html'; // חזרה לדף הבית
+        deleteCookie('currentUser');
+        window.location.href = 'index.html'; 
     });
 }
 
 function updateProfileUI(user) {
-    // --- מילוי פרטים בסיסיים ---
+    // --- Basic Info ---
     const nameEl = document.getElementById('displayName');
     const usernameEl = document.getElementById('displayUsername');
     const dateEl = document.getElementById('joinDate');
@@ -43,95 +37,152 @@ function updateProfileUI(user) {
 
     nameEl.textContent = user.name || user.username;
     usernameEl.textContent = user.username;
-    
-    // תאריך (אם אין, נשתמש בהיום)
-    const joinDate = user.joinDate || new Date().toLocaleDateString('he-IL');
-    dateEl.textContent = joinDate;
+    dateEl.textContent = user.joinDate || new Date().toLocaleDateString('he-IL');
 
-    // אווטאר
     if (avatarEl) {
         avatarEl.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}&backgroundColor=c0aede`;
     }
 
-    // --- חישוב נקודות וסטטיסטיקה (הלוגיקה שלך) ---
+    // --- Statistics & Data Processing ---
     const pointsEl = document.getElementById('totalScore');
     const gamesEl = document.getElementById('gamesPlayed');
-    const levelEl = document.getElementById('highestLevel');
+    const peakCountEl = document.getElementById('peakCount');
     const rankEl = document.getElementById('rankBadge');
 
     let totalPoints = 0;
-    let maxLevel = 1;
-    let gamesCount = 0;
-    let history = user.highScores || []; // מוודאים שיש מערך
+    let totalGamesPlayed = 0;
+    let totalPeaks = 0;
+    let allSessions = [];
 
-    if (Array.isArray(history) && history.length > 0) {
-        gamesCount = history.length;
+    // Check for gamesHistory object
+    const gamesHistory = user.gamesHistory || {};
+
+    // 1. Flatten all games into one array and calculate totals
+    Object.keys(gamesHistory).forEach(gameName => {
+        const gameSessions = gamesHistory[gameName];
         
-        // סיכום נקודות
-        totalPoints = history.reduce((sum, game) => {
-            // טיפול במקרה שהניקוד נשמר כאובייקט או כמספר
-            const scoreVal = typeof game === 'object' ? parseInt(game.score) : parseInt(game);
-            
-            // בדיקת רמה מקסימלית על הדרך
-            if (game.level && parseInt(game.level) > maxLevel) {
-                maxLevel = game.level;
-            }
-            
-            return sum + (isNaN(scoreVal) ? 0 : scoreVal);
-        }, 0);
-    }
+        if (Array.isArray(gameSessions)) {
+            gameSessions.forEach(session => {
+                totalPoints += session.score || 0;
+                totalGamesPlayed++;
+                if (session.isPeak) totalPeaks++;
 
-    // הצגת הנתונים
-    pointsEl.textContent = totalPoints;
-    gamesEl.textContent = gamesCount;
-    levelEl.textContent = maxLevel;
-
-    // --- חישוב מדליות/דרגות (הלוגיקה שלך) ---
-    let medals = '🌱 מתחיל';
-    
-    if (totalPoints > 1000) {
-        medals = '🥇 גיימר זהב';
-        rankEl.style.backgroundColor = '#f1c40f'; // צבע זהב
-        rankEl.style.color = '#000';
-    } 
-    else if (totalPoints > 500) {
-        medals = '🥈 גיימר כסף';
-        rankEl.style.backgroundColor = '#bdc3c7'; // צבע כסף
-    } 
-    else if (totalPoints > 100) {
-        medals = '🥉 גיימר ארד';
-        rankEl.style.backgroundColor = '#e67e22'; // צבע ברונזה
-    }
-    
-    rankEl.textContent = medals;
-
-    // --- בניית רשימת ההיסטוריה (תוספת ויזואלית) ---
-    const listContainer = document.getElementById('scoresList');
-    if (listContainer) {
-        if (gamesCount > 0) {
-            listContainer.innerHTML = ''; 
-            // מציגים מהסוף להתחלה (הכי חדש למעלה)
-            history.slice().reverse().forEach(game => {
-                const gameName = game.gameName || 'משחק';
-                const scoreVal = game.score || game;
-                const dateVal = game.date || 'לאחרונה';
-                
-                const html = `
-                    <div class="game-item">
-                        <div class="game-info">
-                            <div class="game-icon" style="background-color: #ffeaa7">🎮</div>
-                            <div>
-                                <div class="game-name">${gameName}</div>
-                                <div class="game-date">${dateVal}</div>
-                            </div>
-                        </div>
-                        <div class="game-score">${scoreVal} נק'</div>
-                    </div>
-                `;
-                listContainer.innerHTML += html;
+                // Add to flat list with game name included
+                allSessions.push({
+                    gameName: gameName,
+                    score: session.score,
+                    date: session.date,
+                    isPeak: session.isPeak
+                });
             });
-        } else {
-            listContainer.innerHTML = '<div class="empty-state">עדיין לא שיחקת במשחקים... קדימה לשחק! 🎮</div>';
         }
+    });
+
+    // Fallback: If using old highScores array (legacy support)
+    if (allSessions.length === 0 && user.highScores && user.highScores.length > 0) {
+        user.highScores.forEach(score => {
+            totalPoints += score;
+            totalGamesPlayed++;
+            allSessions.push({
+                gameName: 'משחק ישן',
+                score: score,
+                date: 'היסטוריה',
+                isPeak: false
+            });
+        });
     }
+
+    // Update Stats Bar
+    pointsEl.textContent = totalPoints;
+    gamesEl.textContent = totalGamesPlayed;
+    peakCountEl.textContent = totalPeaks;
+
+    // --- Medals Logic ---
+    let medalText = '🌱 מתחיל';
+    let medalColor = '#ffeaa7'; // Default pale yellow
+
+    if (totalPoints > 2000) {
+        medalText = '👑 אגדת גיימינג';
+        medalColor = '#a29bfe'; // Purple
+        rankEl.style.color = '#fff';
+    } else if (totalPoints > 1000) {
+        medalText = '🥇 גיימר זהב';
+        medalColor = '#f1c40f'; // Gold
+    } else if (totalPoints > 500) {
+        medalText = '🥈 גיימר כסף';
+        medalColor = '#bdc3c7'; // Silver
+    } else if (totalPoints > 100) {
+        medalText = '🥉 גיימר ארד';
+        medalColor = '#e67e22'; // Bronze
+        rankEl.style.color = '#fff';
+    }
+
+    rankEl.textContent = medalText;
+    rankEl.style.backgroundColor = medalColor;
+
+    // --- Helpers for Sorting ---
+    // Helper to parse Hebrew date string "DD.MM.YYYY, HH:mm:ss" to timestamp
+    const parseDate = (dateStr) => {
+        if (!dateStr || dateStr === 'היסטוריה') return 0;
+        try {
+            // Split "22.5.2024, 14:30:00"
+            const parts = dateStr.split(','); 
+            if (parts.length < 2) return 0; // Simple fallback
+            const dateParts = parts[0].trim().split('.');
+            const timeParts = parts[1].trim().split(':');
+            // new Date(year, monthIndex, day, hours, minutes, seconds)
+            return new Date(dateParts[2], dateParts[1]-1, dateParts[0], timeParts[0], timeParts[1], timeParts[2] || 0).getTime();
+        } catch (e) {
+            return 0;
+        }
+    };
+
+    // --- Render List 1: Full History (Sorted by Date Descending) ---
+    const historyListContainer = document.getElementById('historyList');
+    
+    // Sort by date (Newest first)
+    const sortedHistory = [...allSessions].sort((a, b) => parseDate(b.date) - parseDate(a.date));
+
+    renderList(historyListContainer, sortedHistory, false);
+
+    // --- Render List 2: Peak Games (Top 5 sorted by Score) ---
+    const peakListContainer = document.getElementById('peakList');
+    
+    // Filter peaks -> Sort by Score Desc -> Take Top 5
+    const peakSessions = allSessions
+        .filter(s => s.isPeak)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5);
+
+    renderList(peakListContainer, peakSessions, true);
+}
+
+// Helper function to render HTML for a list of games
+function renderList(container, data, isPeakList) {
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (data.length === 0) {
+        container.innerHTML = '<div class="empty-state">אין נתונים להצגה...</div>';
+        return;
+    }
+
+    data.forEach(game => {
+        const icon = isPeakList ? '🔥' : '🎮';
+        const highlightClass = isPeakList ? 'peak-item' : '';
+        
+        const html = `
+            <div class="game-item ${highlightClass}">
+                <div class="game-info">
+                    <div class="game-icon">${icon}</div>
+                    <div>
+                        <div class="game-name">${game.gameName}</div>
+                        <div class="game-date">${game.date}</div>
+                    </div>
+                </div>
+                <div class="game-score">${game.score} נק'</div>
+            </div>
+        `;
+        container.innerHTML += html;
+    });
 }

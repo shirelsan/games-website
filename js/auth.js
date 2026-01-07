@@ -128,7 +128,7 @@ function handleLogin(event) {
     const user = users.find(u => u.username === username && u.password === password);
 
     if (user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        setCookie('currentUser', user);
         showMessage("התחברת בהצלחה! ברוך הבא " + user.name, "success");
         
         // --- התיקון כאן: מעבר לעמוד הבית אחרי 1.5 שניות ---

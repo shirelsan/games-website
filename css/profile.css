@@ -1,10 +1,10 @@
-/* css/profile.css - עיצוב סופי למצב דיאלוג */
+/* css/profile.css */
 
 :root {
-    --primary: #2ECC71;       /* ירוק */
-    --accent: #FF8c00;        /* כתום */
+    --primary: #2ECC71;       
+    --accent: #FF8c00;        
     --accent-light: #FFA500;
-    --secondary: #F1C40F;     /* צהוב */
+    --secondary: #F1C40F;     
     
     --bg-body: #F9FAFB;
     --text-dark: #2D3436;
@@ -17,12 +17,12 @@
 body {
     margin: 0; padding: 0;
     font-family: 'Fredoka', 'Segoe UI', sans-serif;
-    color: var(--text-dark);
+    color: #2D3436;
     overflow-x: hidden;
     background-color: var(--bg-body);
 }
 
-/* --- רקע אנימציה --- */
+/* --- Animated Background --- */
 .animated-background {
     background-color: var(--bg-body);
     background-image: 
@@ -32,13 +32,29 @@ body {
     width: 100%; height: 100vh; position: fixed; top: 0; left: 0; z-index: -1;
 }
 
-.circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0; }
+.circles { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    margin: 0; 
+    padding: 0;
+}
+
 .circles li {
-    position: absolute; display: block; list-style: none;
-    width: 20px; height: 20px; background: rgba(46, 204, 113, 0.4);
-    animation: animate 25s linear infinite; bottom: -150px;
+    position: absolute; 
+    display: block; 
+    list-style: none;
+    width: 20px; 
+    height: 20px; 
+    background: rgba(46, 204, 113, 0.4);
+    animation: animate 25s linear infinite; 
+    bottom: -150px;
     border: 2px solid rgba(0,0,0,0.1);
 }
+
 .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; background: rgba(255, 140, 0, 0.6); animation-delay: 0s; }
 .circles li:nth-child(2) { left: 10%; width: 30px; height: 30px; background: rgba(46, 204, 113, 0.6); animation-delay: 2s; border-radius: 50%; }
 .circles li:nth-child(3) { left: 70%; width: 40px; height: 40px; background: rgba(241, 196, 15, 0.6); animation-delay: 4s; }
@@ -50,36 +66,64 @@ body {
     100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
 }
 
-/* --- כפתורים עליונים (Header) --- */
+/* --- Header --- */
 .site-header {
-    position: absolute; top: 20px; left: 0; width: 100%; z-index: 100;
-    display: flex; justify-content: space-between; /* כפתורים בקצוות */
-    padding: 0 40px; box-sizing: border-box;
+    position: absolute; 
+    top: 20px; 
+    left: 0; 
+    width: 100%; 
+    z-index: 100;
+    display: flex; 
+    justify-content: space-between; 
+    padding: 0 40px; 
+    box-sizing: border-box;
 }
 
 .btn-action {
-    display: flex; align-items: center; gap: 10px;
-    text-decoration: none; border: none; cursor: pointer;
-    font-weight: 800; font-size: 1rem; font-family: inherit;
-    padding: 10px 24px; border-radius: 50px;
+    display: flex; 
+    align-items: center; 
+    gap: 10px;
+    text-decoration: none; 
+    border: none; 
+    cursor: pointer;
+    font-weight: 800; 
+    font-size: 1rem; 
+    font-family: inherit;
+    padding: 10px 24px; 
+    border-radius: 50px;
     border: var(--border-black);
     box-shadow: 4px 4px 0px #000000;
     transition: all 0.2s;
 }
-.btn-home { background-color: var(--secondary); color: var(--text-dark); }
-.btn-logout { background-color: #ff7675; color: white; }
-.btn-action:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #000000; }
 
-/* --- כרטיס הפרופיל --- */
+.btn-home { 
+    background-color: var(--secondary); 
+    color: var(--text-dark); 
+}
+
+.btn-logout { 
+    background-color: #ff7675; 
+    color: white; 
+}
+
+.btn-action:hover { 
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000000; 
+}
+
+/* --- Profile Card --- */
 .profile-container {
     min-height: 100vh;
-    display: flex; justify-content: center; align-items: center;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
     padding: 80px 20px;
 }
 
 .profile-card {
     background: white;
-    width: 100%; max-width: 700px;
+    width: 100%; 
+    max-width: 900px; /* Increased width for double columns */
     border-radius: 32px;
     padding: 40px;
     border: var(--border-black);
@@ -88,20 +132,41 @@ body {
     overflow: visible;
 }
 
-/* --- מצב מחובר (Logged In) --- */
-.profile-header { display: flex; align-items: center; gap: 30px; margin-bottom: 30px; }
-.avatar-container { position: relative; }
+/* --- Logged In View --- */
+.profile-header { 
+    display: flex; 
+    align-items: center; 
+    gap: 30px; 
+    margin-bottom: 30px; 
+}
+
+.avatar-container { 
+    position: relative; 
+}
+
 .avatar-container img {
-    width: 100px; height: 100px; border-radius: 50%;
-    border: var(--border-black); background-color: #ffeaa7;
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%;
+    border: var(--border-black); 
+    background-color: #ffeaa7;
 }
+
 .rank-badge {
-    position: absolute; bottom: -5px; right: -10px;
-    background-color: var(--primary); color: white;
-    font-weight: bold; font-size: 0.9rem; padding: 5px 12px;
-    border-radius: 20px; border: 2px solid #2D3436;
-    transform: rotate(-5deg); box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    position: absolute; 
+    bottom: -5px; 
+    right: -10px;
+    background-color: var(--primary); 
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem; 
+    padding: 5px 12px;
+    border-radius: 20px; 
+    border: 2px solid #2D3436;
+    transform: rotate(-5deg); 
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
 }
+
 .user-info h1 { margin: 0; font-size: 2rem; color: var(--text-dark); }
 .username { color: var(--text-gray); margin: 5px 0; font-weight: 600; font-size: 1.1rem; }
 .join-date { font-size: 0.9rem; color: #a0a0a0; margin-top: 5px; }
@@ -121,61 +186,58 @@ body {
 .stat-value { font-size: 2rem; font-weight: 800; color: var(--text-dark); margin: 5px 0; }
 .stat-label { font-size: 0.9rem; font-weight: 600; color: var(--text-gray); }
 
-.games-history-section h2 { font-size: 1.5rem; margin-bottom: 15px; }
-.history-list { display: flex; flex-direction: column; gap: 15px; }
+/* --- Lists Section (New Grid) --- */
+.lists-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns side by side */
+    gap: 30px;
+}
+
+.list-section h2 { font-size: 1.4rem; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+.history-list { display: flex; flex-direction: column; gap: 15px; max-height: 400px; overflow-y: auto; padding-right: 5px; }
+
+/* Custom Scrollbar */
+.history-list::-webkit-scrollbar { width: 6px; }
+.history-list::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 10px; }
+
 .game-item {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 20px; background-color: #f8f9fa;
+    padding: 12px 15px; background-color: #f8f9fa;
     border-radius: 16px; border: 2px solid #eee; transition: 0.2s;
 }
 .game-item:hover { border-color: var(--text-dark); background-color: white; transform: scale(1.01); box-shadow: 3px 3px 0 rgba(0,0,0,0.1); }
-.game-info { display: flex; align-items: center; gap: 15px; }
-.game-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid #2D3436; }
-.game-name { font-weight: 700; font-size: 1.1rem; }
-.game-score { font-weight: 800; font-size: 1.2rem; color: var(--accent); }
+
+.game-item.peak-item { border-color: var(--accent); background-color: #fff8e1; } /* Highlight for peak items */
+
+.game-info { display: flex; align-items: center; gap: 12px; }
+.game-icon { width: 35px; height: 35px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; background: white; border: 2px solid #2D3436; }
+.game-name { font-weight: 700; font-size: 1rem; }
+.game-date { font-size: 0.8rem; color: #888; }
+.game-score { font-weight: 800; font-size: 1.1rem; color: var(--accent); }
 .empty-state { text-align: center; color: #aaa; padding: 20px; font-style: italic; }
 
-/* ========================================= */
-/* עיצוב למצב אורח (Guest View) - גרסת דיאלוג */
-/* ========================================= */
-
+/* --- Guest View --- */
 .guest-layout {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 25px;
-    max-width: 600px; margin: 0 auto; padding-top: 20px;
+    display: flex; align-items: flex-start; justify-content: center;
+    gap: 25px; max-width: 600px; margin: 0 auto; padding-top: 20px;
 }
-
-/* 1. הרוח */
 .guest-icon-wrapper {
-    background-color: #F0F2F5;
-    width: 100px; height: 100px; border-radius: 50%;
+    background-color: #F0F2F5; width: 100px; height: 100px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    border: var(--border-black); box-shadow: 4px 4px 0px #000000;
-    animation: ghostFloat 3s ease-in-out infinite;
-    position: relative; z-index: 2;
+    flex-shrink: 0; border: var(--border-black); box-shadow: 4px 4px 0px #000000;
+    animation: ghostFloat 3s ease-in-out infinite; position: relative; z-index: 2;
 }
-
 @keyframes ghostFloat {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
 }
-
 .guest-icon { width: 55px; height: 55px; color: var(--text-dark); }
-
-/* 2. בועת הטקסט */
 .guest-content-card {
-    background-color: #fff8e1;
-    border: var(--border-black);
-    border-radius: 20px; padding: 30px;
-    text-align: right;
-    box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
-    position: relative; flex-grow: 1;
+    background-color: #fff8e1; border: var(--border-black);
+    border-radius: 20px; padding: 30px; text-align: right;
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.1); position: relative; flex-grow: 1;
 }
-
-/* המשולש (שפיץ) שפונה ימינה */
 .guest-content-card::before {
     content: ''; position: absolute; top: 30px; right: -23px;
     border-width: 12px; border-style: solid;
@@ -186,39 +248,27 @@ body {
     border-width: 12px; border-style: solid;
     border-color: transparent transparent transparent #fff8e1;
 }
-
 .guest-title { font-size: 1.8rem; font-weight: 800; margin: 0 0 15px 0; line-height: 1.2; }
 .guest-text { font-size: 1.1rem; margin-bottom: 25px; line-height: 1.5; color: var(--text-dark); }
-
 .guest-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
 .btn {
-    flex: 1; text-align: center; padding: 12px;
-    border-radius: 50px; text-decoration: none;
-    font-weight: 800; font-size: 1rem;
-    transition: all 0.2s; white-space: nowrap;
-    border: var(--border-black);
+    flex: 1; text-align: center; padding: 12px; border-radius: 50px; text-decoration: none;
+    font-weight: 800; font-size: 1rem; transition: all 0.2s; white-space: nowrap; border: var(--border-black);
 }
 .btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #000000; }
 .btn-register-now { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: white; box-shadow: 4px 4px 0px #000000; }
 .btn-login-now { background: white; color: var(--text-dark); box-shadow: 4px 4px 0px rgba(0,0,0,0.1); }
 
-/* מובייל */
-@media (max-width: 650px) {
+/* Mobile Responsive */
+@media (max-width: 750px) {
     .site-header { padding: 0 20px; }
     .profile-header { flex-direction: column; text-align: center; }
     .stats-grid { grid-template-columns: 1fr; }
+    .lists-container { grid-template-columns: 1fr; } /* Stack lists on mobile */
     
     .guest-layout { flex-direction: column; align-items: center; gap: 20px; }
     .guest-content-card { text-align: center; width: 100%; }
-    
-    /* במובייל השפיץ למעלה */
-    .guest-content-card::before {
-        top: -24px; right: 50%; transform: translateX(50%);
-        border-color: transparent transparent #2D3436 transparent;
-    }
-    .guest-content-card::after {
-        top: -17px; right: 50%; transform: translateX(50%);
-        border-color: transparent transparent #fff8e1 transparent;
-    }
+    .guest-content-card::before { top: -24px; right: 50%; transform: translateX(50%); border-color: transparent transparent #2D3436 transparent; }
+    .guest-content-card::after { top: -17px; right: 50%; transform: translateX(50%); border-color: transparent transparent #fff8e1 transparent; }
     .guest-buttons { flex-direction: column; }
 }

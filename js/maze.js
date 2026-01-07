@@ -3,6 +3,8 @@ const GAME_WIDTH = 600;
 const GAME_HEIGHT = 400;
 const PLAYER_SIZE = 30;
 const MOVE_STEP = 15; // Speed of player
+const GAME_NAME = 'Maze Escape'; // Identifier for the game history
+const PEAK_SCORE_THRESHOLD = 150; // Threshold for a "Peak" game
 
 // --- Game State ---
 let gameState = {
@@ -12,7 +14,8 @@ let gameState = {
     isPlaying: false,
     enemyInterval: null,
     playerX: 0,
-    playerY: 0
+    playerY: 0,
+    startTime: null // Store when the specific game session started
 };
 
 // --- Elements ---
@@ -23,6 +26,9 @@ const levelEl = document.getElementById('levelDisplay');
 const diffScreen = document.getElementById('difficultyScreen');
 const controls = document.getElementById('gameControls');
 const messageOverlay = document.getElementById('messageOverlay');
+
+// Disable scrollbars to prevent arrow key scrolling issues
+// document.body.style.overflow = 'hidden';
 
 // --- Level Designs (Static Walls) ---
 // Each wall is object {x, y, w, h}
@@ -60,6 +66,9 @@ function startGame(difficulty) {
     gameState.level = 1;
     gameState.score = 0;
     gameState.isPlaying = true;
+    
+    // Set the start time for this session (Date and Hour)
+    gameState.startTime = new Date().toLocaleString('he-IL'); 
 
     // UI Updates
     scoreEl.innerText = '0';
@@ -76,7 +85,7 @@ function startGame(difficulty) {
             loadLevel(1);
             break;
         default:
-            loadLevel(2);
+            loadLevel(0); // Start from level 1 for medium/default
     }
     
     // Listen for keys
@@ -91,9 +100,8 @@ function loadLevel(levelIndex) {
     if (gameState.enemyInterval) clearInterval(gameState.enemyInterval);
 
     // Clear Board (keep player)
-    // Remove all walls, enemies, coins, exits
-    const removableElements = document.querySelectorAll('.wall, .enemy, .coin, .exit');
-    removableElements.forEach(el => el.remove());
+    const removables = document.querySelectorAll('.wall, .enemy, .coin, .exit');
+    removables.forEach(el => el.remove());
 
     // 1. Set Player Start
     gameState.playerX = 20;
@@ -104,17 +112,10 @@ function loadLevel(levelIndex) {
     const currentLevelWalls = levels[levelIndex % levels.length];
     currentLevelWalls.forEach(w => createWall(w));
 
-    // 3. Create Exit (Fixed location usually bottom right, or tricky spot)
+    // 3. Create Exit
     createExit(540, 340);
 
-    // 4. Create Coins (Random spots that aren't walls)
-    // Simple fixed coins for simplicity
-    // createCoin(150, 50);
-    // createCoin(300, 200);
-    // createCoin(450, 350);
-
-    // // 4. Create Coins Dynamically
-    // // We pass the walls array to check collisions during spawn
+    // 4. Create Coins Dynamically
     spawnCoins(5, currentLevelWalls); // Place 5 coins
 
     // 5. Create Enemies based on difficulty
@@ -178,7 +179,6 @@ function createWall(wall) {
     el.style.width = wall.w + 'px';
     el.style.height = wall.h + 'px';
     container.appendChild(el);
-    console.log('Wall created at', wall);
 }
 
 function createExit(x, y) {
@@ -253,19 +253,10 @@ function handleInput(e) {
     }
 
     // 2. Wall Collision Check (The core requirement)
-    // We create a temporary "rect" for the player's next position
-    // Since we don't move the DOM yet, we can't use player.getBoundingClientRect() for the NEXT pos.
-    // However, the requirement is to use getBoundingClientRect. 
-    // Trick: We check collision against current walls using logic that mimics it,
-    // OR strictly: check if the new position overlaps any wall element's rect.
-    
-    // Let's get all walls
     const walls = document.querySelectorAll('.wall');
     let collision = false;
 
     // Simulation of player Rect at next position relative to viewport
-    // We need offset relative to container, so simpler math is better here, 
-    // but let's stick to the spirit of "Client Rect" collision logic.
     const containerRect = container.getBoundingClientRect();
     
     // Next absolute position on screen
@@ -428,13 +419,23 @@ function levelComplete() {
     // Reward points
     gameState.score += 50;
     
+    // Save score immediately upon level completion
+    // If it's the first level completion of the session, we push new.
+    // If it's subsequent levels, we update the last entry.
+    if (gameState.level > 1){
+        saveScore(false); // Update existing entry
+    } else {
+        saveScore(true); // Create new entry
+    }
+    
+
     // Check if next level exists
     if (gameState.level < levels.length) {
         showOverlay("כל הכבוד!", "השלמת את שלב " + gameState.level + ". מוכן לשלב הבא?", true);
     } else {
-        saveScore();
         showOverlay("ניצחון!", "סיימת את כל השלבים עם " + gameState.score + " נקודות!", false);
     }
+    
 }
 
 function nextLevel() {
@@ -492,14 +493,53 @@ function showOverlay(title, text, isNextLevel) {
     messageOverlay.classList.remove('hidden');
 }
 
-function saveScore() {
+function saveScore(isNewSession) {
     // Check if user is logged in
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log('Saving score for user:', currentUser);
+    
     if (currentUser) {
-        // Add score to highScores array
-        if (!currentUser.highScores) currentUser.highScores = [];
-        currentUser.highScores.push(gameState.score);
+        // Ensure gamesHistory structure exists
+        if (!currentUser.gamesHistory) {
+            currentUser.gamesHistory = {};
+        }
         
+        // Ensure specific game array exists
+        if (!currentUser.gamesHistory[GAME_NAME]) {
+            currentUser.gamesHistory[GAME_NAME] = [];
+        }
+
+        const historyArray = currentUser.gamesHistory[GAME_NAME];
+
+        // Create the score object
+        const scoreEntry = {
+            score: gameState.score,
+            date: gameState.startTime, // Use the session start time
+            isPeak: gameState.score >= PEAK_SCORE_THRESHOLD
+        };
+
+        if (isNewSession) {
+            // New game session: Push new entry
+            historyArray.push(scoreEntry);
+        } else {
+            // Continuation: Update the last entry (the current session)
+            if (historyArray.length > 0) {
+                historyArray[historyArray.length - 1] = scoreEntry;
+            } else {
+                // Fallback if array is empty
+                historyArray.push(scoreEntry);
+            }
+        }
+
+        // Also update the legacy highScores array if you still use it elsewhere
+        // (Optional: removing this if you purely want to use gamesHistory now)
+        if (!currentUser.highScores) currentUser.highScores = [];
+        if (isNewSession) {
+             currentUser.highScores.push(gameState.score);
+        } else if (currentUser.highScores.length > 0) {
+             currentUser.highScores[currentUser.highScores.length - 1] = gameState.score;
+        }
+
         // Update User in LocalStorage (list of users)
         const users = JSON.parse(localStorage.getItem('users')) || [];
         const index = users.findIndex(u => u.username === currentUser.username);

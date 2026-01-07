@@ -50,6 +50,7 @@
 
                 <hr class="divider">
 
+                <!-- Stats Bar -->
                 <div class="stats-grid">
                     <div class="stat-box yellow">
                         <i data-lucide="trophy" class="stat-icon"></i>
@@ -62,16 +63,31 @@
                         <div class="stat-label">משחקים</div>
                     </div>
                     <div class="stat-box green">
-                        <i data-lucide="star" class="stat-icon"></i>
-                        <div class="stat-value" id="highestLevel">1</div>
-                        <div class="stat-label">שיא רמה</div>
+                        <i data-lucide="flame" class="stat-icon"></i>
+                        <div class="stat-value" id="peakCount">0</div>
+                        <div class="stat-label">שיאים שנשברו</div>
                     </div>
                 </div>
 
-                <div class="games-history-section">
-                    <h2>🏆 השיאים שלי</h2>
-                    <div class="history-list" id="scoresList">
+                <!-- Two Lists Area -->
+                <div class="lists-container">
+                    
+                    <!-- 1. Peak Games (Top 5) -->
+                    <div class="list-section">
+                        <h2>🔥 שיאים (Top 5)</h2>
+                        <div class="history-list" id="peakList">
+                            <!-- Injected via JS -->
                         </div>
+                    </div>
+
+                    <!-- 2. Full History -->
+                    <div class="list-section">
+                        <h2>📜 היסטוריית משחקים</h2>
+                        <div class="history-list" id="historyList">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -90,8 +106,8 @@
                         </p>
                         
                         <div class="guest-buttons">
-                            <a href="LOGIN.html" class="btn btn-register-now">יאללה, תרשמו אותי! 🚀</a>
-                            <a href="LOGIN.html" class="btn btn-login-now">יש לי כבר משתמש</a>
+                            <a href="login.html" class="btn btn-register-now">יאללה, תרשמו אותי! 🚀</a>
+                            <a href="login.html" class="btn btn-login-now">יש לי כבר משתמש</a>
                         </div>
                     </div>
                 </div>
@@ -102,6 +118,7 @@
     </div>
 
     <script>lucide.createIcons();</script>
+    <script src="js/cookies.js"></script>
     <script src="js/profile.js"></script>
 </body>
 </html>

@@ -145,6 +145,7 @@
             </div>
         </footer>
 
+        <script src="js/cookies.js"></script>
         <script>
             // נפעיל את האייקונים פעם ראשונה (עבור שאר העמוד)
             lucide.createIcons();
@@ -158,8 +159,8 @@
 
             // --- לוגיקת משתמש ---
             document.addEventListener('DOMContentLoaded', () => {
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                
+                const currentUser = getCookie('currentUser');
+                console.log('Current User:', currentUser);
                 const loginBtn = document.getElementById('loginBtn');
                 const navUsername = document.getElementById('navUsername');
                 const avatarContainer = document.getElementById('avatarContainer');
