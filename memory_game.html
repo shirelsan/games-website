@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחק הזיכרון הצבעוני | GameZone</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/memory_game.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body>
+    <header class="game-header-container">
+        <div class="top-right-controls">
+            <a href="index.html" class="btn-home">
+                <i data-lucide="home"></i>חזרה לעמוד הבית</a>
+        </div>
+        <h1 class="game-title">הזיכרון הצבעוני</h1>
+    </header>
+
+    <main class="game-container">
+        <!-- Game Info Panel -->
+        <div class="info-panel">
+            <div class="info-card">
+                <i data-lucide="layers"></i>
+                <div class="info-content">
+                    <span class="info-label">שלב</span>
+                    <span class="info-value" id="levelDisplay">1</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <i data-lucide="zap"></i>
+                <div class="info-content">
+                    <span class="info-label">צעדים</span>
+                    <span class="info-value" id="sequenceLength">3</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <i data-lucide="trophy"></i>
+                <div class="info-content">
+                    <span class="info-label">שיא</span>
+                    <span class="info-value" id="highScore">0</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <i data-lucide="flame"></i>
+                <div class="info-content">
+                    <span class="info-label">רצף</span>
+                    <span class="info-value" id="comboDisplay">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Board -->
+        <div class="game-board">
+            <div class="color-grid" id="colorGrid">
+                <button class="color-button" data-color="red" style="--btn-color: #E74C3C"></button>
+                <button class="color-button" data-color="blue" style="--btn-color: #3498DB"></button>
+                <button class="color-button" data-color="green" style="--btn-color: #2ECC71"></button>
+                <button class="color-button" data-color="yellow" style="--btn-color: #F1C40F"></button>
+            </div>
+
+            <!-- Game Status Message -->
+            <div class="status-message" id="statusMessage">
+                לחץ על "התחל משחק" כדי להתחיל!
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="controls">
+            <button class="control-btn start-btn" id="startBtn">
+                <i data-lucide="play"></i>
+                <span>התחל משחק</span>
+            </button>
+            
+            <button class="control-btn reset-btn" id="resetBtn">
+                <i data-lucide="rotate-ccw"></i>
+                <span>איפוס</span>
+            </button>
+        </div>
+
+        <!-- Difficulty Selection -->
+        <div class="difficulty-panel">
+            <h3>רמת קושי</h3>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn" data-difficulty="easy">
+                    <i data-lucide="smile"></i>
+                    <span>קל</span>
+                </button>
+                <button class="difficulty-btn active" data-difficulty="medium">
+                    <i data-lucide="meh"></i>
+                    <span>בינוני</span>
+                </button>
+                <button class="difficulty-btn" data-difficulty="hard">
+                    <i data-lucide="frown"></i>
+                    <span>קשה</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>איך משחקים?</h3>
+            <ol>
+                <li>לחץ על "התחל משחק" כדי לראות את הרצף הראשון</li>
+                <li>שים לב לצבעים המהבהבים ולסדר שלהם</li>
+                <li>חזור על הרצף על ידי לחיצה על הצבעים באותו סדר</li>
+                <li>כל שלב מוסיף צבע נוסף לרצף</li>
+                <li>השג רצף ניצחונות כדי להגיע לרמות גבוהות יותר!</li>
+            </ol>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2025 Fun&Games Website. All rights reserved</p>
+        <div class="follow-us">
+            <span>Follow us on</span>
+            <div class="social-icons">
+                <a href="https://www.instagram.com" target="_blank"><img src="images/instagram.png" alt="Instagram"></a>
+                <a href="https://www.facebook.com" target="_blank"><img src="images/facebook.png" alt="Facebook"></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/cookies.js"></script>
+    <script src="js/memory_game.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('navbar');
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // User Login Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = getCookie('currentUser');
+            const loginBtn = document.getElementById('loginBtn');
+            const navUsername = document.getElementById('navUsername');
+            const avatarContainer = document.getElementById('avatarContainer');
+
+            if (currentUser) {
+                loginBtn.style.display = 'none';
+                navUsername.innerText = currentUser.name;
+                navUsername.style.display = 'block';
+                avatarContainer.classList.remove('guest');
+                avatarContainer.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.username}&backgroundColor=c0aede" alt="User">`;
+            } else {
+                loginBtn.style.display = 'block';
+                navUsername.style.display = 'none';
+                avatarContainer.classList.add('guest');
+                avatarContainer.innerHTML = `<i data-lucide="ghost" class="ghost-icon-header"></i>`;
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

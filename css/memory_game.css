@@ -1,0 +1,449 @@
+/* Memory Game Specific Styles */
+body {
+    /* overflow: hidden; */
+    font-family: 'Rubik', sans-serif; /* ודאי שיש פונט ברירת מחדל */
+}
+
+/* --- תוספות חדשות לכותרת וכפתור חזרה --- */
+
+.game-header-container {
+    position: relative; /* כדי שנוכל למקם את הכפתור אבסולוטית ביחס אליו */
+    text-align: center;
+    padding-top: 20px;
+    margin-bottom: 10px;
+}
+
+.top-right-controls {
+    position: absolute;
+    top: 20px;
+    right: 40px; /* מיקום בצד ימין */
+    z-index: 100;
+}
+
+/* --- עדכון כפתור חזרה לבית (סטייל משחקי עם מסגרת שחורה) --- */
+
+.btn-home {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* רווח בין האייקון לטקסט */
+    text-decoration: none;
+    
+    /* צבעים ועיצוב */
+    background-color: #F1C40F; /* צהוב */
+    color: #2D3436; /* טקסט כהה */
+    font-weight: 800;
+    font-size: 1rem;
+    font-family: 'Fredoka', sans-serif; /* פונט עגול */
+    
+    padding: 10px 24px;
+    border-radius: 50px;
+    
+    /* המסגרת השחורה והצל הקשיח - זה מה שעושה את ההבדל */
+    border: 3px solid #2D3436;
+    box-shadow: 4px 4px 0px #000000;
+    
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* אפקט לחיצה */
+.btn-home:hover {
+    transform: translate(2px, 2px); /* זז למטה וימינה */
+    box-shadow: 2px 2px 0px #000000; /* הצל נהיה קטן יותר */
+    background-color: #f39c12; /* צהוב מעט כהה יותר */
+}
+
+/* התאמה לאייקון בתוך הכפתור */
+.btn-home svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 3px; /* אייקון עבה יותר */
+}
+
+.game-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 3rem;
+    color: #193f49;
+    margin-bottom: 10px; /* הקטנתי קצת כדי לקרב את ההוראות */
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%; /* התאמה קלה בגלל הכפתור */
+}
+
+:root {
+    --primary: #2ECC71;
+    --primary-hover: #27ae60;
+    --accent: #FF8c00;
+    --accent-light: #FFA500;
+    --secondary: #F1C40F;
+    --bg-body: #F9FAFB;
+    --text-dark: #2D3436;
+    --text-gray: #636e72;
+    --radius-xl: 32px;
+    --radius-lg: 24px;
+}
+
+.game-container {
+    max-width: 900px;
+    margin: 30px auto 4rem;
+    padding: 0 2rem;
+}
+
+/* Info Panel */
+.info-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.info-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    border: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.info-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+}
+
+.info-card i {
+    width: 40px;
+    height: 40px;
+    color: var(--primary);
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+.info-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    font-family: 'Fredoka', sans-serif;
+}
+
+/* Game Board */
+.game-board {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+    border: 3px solid #f0f0f0;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.color-button {
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 24px;
+    background: var(--btn-color);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    outline: 4px solid transparent;
+}
+
+.color-button:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.color-button:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.color-button.flash {
+    animation: flash 0.5s ease;
+    outline-color: white;
+    outline-width: 6px;
+}
+
+.color-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+@keyframes flash {
+    0%, 100% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+    50% {
+        filter: brightness(1.8);
+        transform: scale(1.1);
+        box-shadow: 0 0 40px var(--btn-color);
+    }
+}
+
+/* Status Message */
+.status-message {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    padding: 1rem;
+    background: linear-gradient(135deg, #e8f8f5 0%, #fff5e6 100%);
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-message.success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.status-message.error {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+}
+
+/* Progress Bar */
+.progress-container {
+    width: 100%;
+    height: 12px;
+    background: #E9ECEF;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent-light));
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 10px;
+    position: relative;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.control-btn {
+    flex: 1;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    font-family: 'Rubik', sans-serif;
+}
+
+.start-btn {
+    background: linear-gradient(45deg, var(--accent), var(--accent-light));
+    color: white;
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.4);
+}
+
+.start-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(255, 140, 0, 0.5);
+}
+
+.start-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.reset-btn {
+    background: white;
+    color: var(--text-dark);
+    border: 2px solid #EEE;
+}
+
+.reset-btn:hover {
+    background: #f8f9fa;
+    border-color: var(--text-gray);
+}
+
+/* Difficulty Panel */
+.difficulty-panel {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+}
+
+.difficulty-panel h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.difficulty-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.difficulty-btn {
+    padding: 1rem;
+    border: 2px solid #EEE;
+    background: white;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.difficulty-btn i {
+    width: 32px;
+    height: 32px;
+}
+
+.difficulty-btn:hover {
+    border-color: var(--primary);
+    background: #f8f9fa;
+}
+
+.difficulty-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Instructions */
+.instructions {
+    background: linear-gradient(135deg, #e8f8f5 0%, #fff5e6 100%);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 3px solid white;
+}
+
+.instructions h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.instructions ol {
+    padding-right: 1.5rem;
+    color: var(--text-dark);
+}
+
+.instructions li {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .game-container {
+        margin-top: 120px;
+        padding: 0 1rem;
+    }
+
+    .game-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .game-title {
+        font-size: 2rem;
+    }
+
+    .info-panel {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .game-board {
+        padding: 2rem 1.5rem;
+    }
+
+    .color-grid {
+        gap: 1rem;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .difficulty-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 1.5rem;
+    }
+
+    .info-value {
+        font-size: 1.5rem;
+    }
+
+    .color-grid {
+        max-width: 100%;
+    }
+}

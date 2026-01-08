@@ -32,30 +32,110 @@ const messageOverlay = document.getElementById('messageOverlay');
 
 // --- Level Designs (Static Walls) ---
 // Each wall is object {x, y, w, h}
+// Structure: levels[levelIndex] = [array of 3 maze variants]
+// Random variant is selected at the beginning of each level
 const levels = [
-    // Level 1: Simple corridors
+    // Level 1: Simple corridors - EASY (fewer walls)
     [
-        {x: 100, y: 0, w: 20, h: 300},
-        {x: 250, y: 100, w: 20, h: 260},
-        {x: 400, y: 0, w: 20, h: 250},
-        {x: 100, y: 300, w: 150, h: 20}
+        // Variant 1: Open corridors with one vertical wall
+        [
+            {x: 150, y: 0, w: 20, h: 200},
+            {x: 350, y: 150, w: 20, h: 250},
+            {x: 200, y: 300, w: 200, h: 20}
+        ],
+        // Variant 2: Side passages
+        [
+            {x: 50, y: 100, w: 20, h: 200},
+            {x: 300, y: 50, w: 20, h: 250},
+            {x: 480, y: 200, w: 20, h: 200}
+        ],
+        // Variant 3: Simple T-shaped maze
+        [
+            {x: 200, y: 0, w: 20, h: 150},
+            {x: 100, y: 150, w: 300, h: 20},
+            {x: 400, y: 150, w: 20, h: 250}
+        ]
     ],
-    // Level 2: Boxy
+    // Level 2: Medium complexity - MEDIUM (more walls, getting crowded)
     [
-        {x: 50, y: 50, w: 500, h: 20},
-        {x: 50, y: 330, w: 500, h: 20},
-        {x: 50, y: 50, w: 20, h: 100},
-        {x: 530, y: 230, w: 20, h: 100},
-        {x: 200, y: 150, w: 200, h: 20},
-        {x: 200, y: 150, w: 20, h: 100}
+        // Variant 1: Winding corridors
+        [
+            {x: 50, y: 50, w: 500, h: 20},
+            {x: 50, y: 330, w: 500, h: 20},
+            {x: 50, y: 50, w: 20, h: 150},
+            {x: 530, y: 200, w: 20, h: 160},
+            {x: 150, y: 170, w: 200, h: 20},
+            {x: 350, y: 220, w: 150, h: 20}
+        ],
+        // Variant 2: Divided sections
+        [
+            {x: 0, y: 0, w: 600, h: 20},
+            {x: 0, y: 380, w: 600, h: 20},
+            {x: 200, y: 80, w: 20, h: 150},
+            {x: 400, y: 150, w: 20, h: 150},
+            {x: 100, y: 250, w: 300, h: 20},
+            {x: 300, y: 100, w: 20, h: 100}
+        ],
+        // Variant 3: Spiral-like pattern
+        [
+            {x: 50, y: 80, w: 150, h: 20},
+            {x: 180, y: 80, w: 20, h: 150},
+            {x: 50, y: 210, w: 150, h: 20},
+            {x: 350, y: 120, w: 200, h: 20},
+            {x: 530, y: 120, w: 20, h: 200},
+            {x: 250, y: 280, w: 300, h: 20}
+        ]
     ],
-    // Level 3: Hard Maze
+    // Level 3: Complex maze - HARD (many walls, tight passages)
     [
-        {x: 0, y: 80, w: 450, h: 20},
-        {x: 150, y: 160, w: 450, h: 20},
-        {x: 0, y: 240, w: 450, h: 20},
-        {x: 150, y: 320, w: 450, h: 20},
-        {x: 500, y: 0, w: 20, h: 80}
+        // Variant 1: Dense maze with narrow passages
+        [
+            {x: 0, y: 60, w: 180, h: 20},
+            {x: 200, y: 60, w: 200, h: 20},
+            {x: 420, y: 60, w: 180, h: 20},
+            {x: 0, y: 160, w: 150, h: 20},
+            {x: 200, y: 160, w: 180, h: 20},
+            {x: 430, y: 160, w: 170, h: 20},
+            {x: 60, y: 260, w: 200, h: 20},
+            {x: 300, y: 260, w: 300, h: 20},
+            {x: 180, y: 80, w: 20, h: 100},
+            {x: 420, y: 80, w: 20, h: 100},
+            {x: 150, y: 180, w: 20, h: 80},
+            {x: 380, y: 200, w: 20, h: 60}
+        ],
+        // Variant 2: Labyrinth with dead ends
+        [
+            {x: 80, y: 0, w: 20, h: 120},
+            {x: 200, y: 0, w: 20, h: 140},
+            {x: 320, y: 0, w: 20, h: 120},
+            {x: 440, y: 0, w: 20, h: 140},
+            {x: 0, y: 120, w: 100, h: 20},
+            {x: 150, y: 140, w: 200, h: 20},
+            {x: 380, y: 120, w: 220, h: 20},
+            {x: 80, y: 200, w: 150, h: 20},
+            {x: 270, y: 200, w: 150, h: 20},
+            {x: 480, y: 180, w: 20, h: 100},
+            {x: 150, y: 280, w: 450, h: 20},
+            {x: 100, y: 300, w: 20, h: 80},
+            {x: 350, y: 300, w: 20, h: 80}
+        ],
+        // Variant 3: Complex interconnected maze
+        [
+            {x: 60, y: 40, w: 200, h: 20},
+            {x: 320, y: 40, w: 220, h: 20},
+            {x: 60, y: 140, w: 100, h: 20},
+            {x: 220, y: 140, w: 120, h: 20},
+            {x: 420, y: 100, w: 120, h: 20},
+            {x: 0, y: 240, w: 280, h: 20},
+            {x: 350, y: 200, w: 250, h: 20},
+            {x: 60, y: 300, w: 200, h: 20},
+            {x: 380, y: 300, w: 220, h: 20},
+            {x: 200, y: 60, w: 20, h: 90},
+            {x: 320, y: 70, w: 20, h: 80},
+            {x: 440, y: 120, w: 20, h: 100},
+            {x: 100, y: 160, w: 20, h: 100},
+            {x: 280, y: 180, w: 20, h: 60}
+        ]
     ]
 ];
 
@@ -63,30 +143,36 @@ const levels = [
 
 function startGame(difficulty) {
     gameState.difficulty = difficulty;
-    gameState.level = 1;
     gameState.score = 0;
     gameState.isPlaying = true;
     
     // Set the start time for this session (Date and Hour)
     gameState.startTime = new Date().toLocaleString('he-IL'); 
 
+    // Set starting level based on difficulty
+    switch (difficulty) {
+        case 'easy':
+            gameState.level = 1;
+            break;
+        case 'medium':
+            gameState.level = 2;
+            break;
+        case 'hard':
+            gameState.level = 3;
+            break;
+        default:
+            gameState.level = 1;
+    }
+
     // UI Updates
     scoreEl.innerText = '0';
-    levelEl.innerText = '1';
+    levelEl.innerText = gameState.level;
     diffScreen.style.display = 'none';
     controls.style.display = 'block';
     messageOverlay.classList.add('hidden');
 
-    switch (difficulty) {
-        case 'easy':
-            loadLevel(0);
-            break;
-        case 'hard':
-            loadLevel(1);
-            break;
-        default:
-            loadLevel(0); // Start from level 1 for medium/default
-    }
+    // Load the appropriate level (convert to 0-based index)
+    loadLevel(gameState.level - 1);
     
     // Listen for keys
     document.addEventListener('keydown', handleInput);
@@ -108,8 +194,11 @@ function loadLevel(levelIndex) {
     gameState.playerY = 20;
     updatePlayerPos();
 
-    // 2. Create Walls
-    const currentLevelWalls = levels[levelIndex % levels.length];
+    // 2. Create Walls - Select random variant from the level's options
+    const levelVariants = levels[levelIndex % levels.length];
+    // Randomly pick one of the 3 maze variants for this level
+    const randomVariantIndex = Math.floor(Math.random() * levelVariants.length);
+    const currentLevelWalls = levelVariants[randomVariantIndex];
     currentLevelWalls.forEach(w => createWall(w));
 
     // 3. Create Exit
@@ -428,6 +517,7 @@ function levelComplete() {
         saveScore(true); // Create new entry
     }
     
+    scoreEl.innerText = gameState.score;
 
     // Check if next level exists
     if (gameState.level < levels.length) {
@@ -498,55 +588,49 @@ function saveScore(isNewSession) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     console.log('Saving score for user:', currentUser);
     
-    if (currentUser) {
-        // Ensure gamesHistory structure exists
-        if (!currentUser.gamesHistory) {
-            currentUser.gamesHistory = {};
-        }
-        
-        // Ensure specific game array exists
-        if (!currentUser.gamesHistory[GAME_NAME]) {
-            currentUser.gamesHistory[GAME_NAME] = [];
-        }
+    if (!currentUser) {
+        console.log('No user logged in. Cannot save score.');
+        return;
+    }
 
-        const historyArray = currentUser.gamesHistory[GAME_NAME];
+    // Ensure gamesHistory structure exists
+    if (!currentUser.value.gamesHistory) {
+        currentUser.value.gamesHistory = {};
+        console.log('Initialized gamesHistory for user.');
+    }
+    
+    // Ensure specific game array exists
+    if (!currentUser.value.gamesHistory[GAME_NAME]) {
+        currentUser.value.gamesHistory[GAME_NAME] = [];
+        console.log('Initialized gamesHistory array for', GAME_NAME);
+    }
 
-        // Create the score object
-        const scoreEntry = {
-            score: gameState.score,
-            date: gameState.startTime, // Use the session start time
-            isPeak: gameState.score >= PEAK_SCORE_THRESHOLD
-        };
+    // Create the score object
+    const scoreEntry = {
+        score: gameState.score,
+        date: gameState.startTime, // Use the session start time
+        isPeak: gameState.score >= PEAK_SCORE_THRESHOLD
+    };
 
         if (isNewSession) {
             // New game session: Push new entry
-            historyArray.push(scoreEntry);
+            currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
         } else {
-            // Continuation: Update the last entry (the current session)
-            if (historyArray.length > 0) {
-                historyArray[historyArray.length - 1] = scoreEntry;
-            } else {
-                // Fallback if array is empty
-                historyArray.push(scoreEntry);
-            }
+            currentUser.value.gamesHistory[GAME_NAME].pop();
+            currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
         }
 
-        // Also update the legacy highScores array if you still use it elsewhere
-        // (Optional: removing this if you purely want to use gamesHistory now)
-        if (!currentUser.highScores) currentUser.highScores = [];
-        if (isNewSession) {
-             currentUser.highScores.push(gameState.score);
-        } else if (currentUser.highScores.length > 0) {
-             currentUser.highScores[currentUser.highScores.length - 1] = gameState.score;
-        }
-
-        // Update User in LocalStorage (list of users)
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const index = users.findIndex(u => u.username === currentUser.username);
-        if (index !== -1) {
-            users[index] = currentUser;
-            localStorage.setItem('users', JSON.stringify(users));
-            localStorage.setItem('currentUser', JSON.stringify(currentUser)); // Update session too
-        }
+    // Update User in LocalStorage (list of users)
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const userIndex = users.findIndex(u => u.username === currentUser.username);
+    
+    if (userIndex !== -1) {
+        users[userIndex] = currentUser;
+        localStorage.setItem('users', JSON.stringify(users));
+        console.log('Updated users in localStorage');
     }
+    
+    // Always update currentUser session
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    console.log('Updated currentUser in localStorage');
 }
