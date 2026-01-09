@@ -612,22 +612,22 @@ function saveScore(isNewSession) {
         isPeak: gameState.score >= PEAK_SCORE_THRESHOLD
     };
 
-        if (isNewSession) {
-            // New game session: Push new entry
-            currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
-        } else {
-            currentUser.value.gamesHistory[GAME_NAME].pop();
-            currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
-        }
+    if (isNewSession) {
+        // New game session: Push new entry
+        currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
+    } else {
+        currentUser.value.gamesHistory[GAME_NAME].pop();
+        currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
+    }
 
     // Update User in LocalStorage (list of users)
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userIndex = users.findIndex(u => u.username === currentUser.username);
+    const userIndex = users.findIndex(u => u.value.username === currentUser.value.username);
     
     if (userIndex !== -1) {
         users[userIndex] = currentUser;
         localStorage.setItem('users', JSON.stringify(users));
-        console.log('Updated users in localStorage');
+        console.log('Updated users in localStorage', gameState.score);
     }
     
     // Always update currentUser session

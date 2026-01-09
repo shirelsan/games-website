@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maze Escape | GameZone</title>
     
-    <link rel="stylesheet" href="css/style.css"> <link rel="stylesheet" href="css/maze.css">  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/maze.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+    <!-- Login Required Overlay -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-overlay-content">
+            <h2>נדרשת כניסה</h2>
+            <p>עליך להיות מחובר כדי לשחק את המשחק הזה</p>
+            <a href="login.html" class="btn-login">התחברות</a>
+        </div>
+    </div>
 
     <header class="game-header-container">
         <div class="top-right-controls">
@@ -71,6 +81,26 @@
     </footer>
 
     <script>lucide.createIcons();</script>
+    <script src="js/cookies.js"></script>
     <script src="js/maze.js"></script>
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = getCookie('currentUser');
+            const loginOverlay = document.getElementById('loginOverlay');
+            const gameContainer = document.getElementById('gameContainer');
+            const gameWrapper = document.querySelector('.game-wrapper');
+            
+            if (!currentUser) {
+                // Hide game content and show login overlay
+                if (gameWrapper) gameWrapper.style.display = 'none';
+                if (loginOverlay) loginOverlay.style.display = 'flex';
+            } else {
+                // User is logged in, show game
+                if (gameWrapper) gameWrapper.style.display = 'flex';
+                if (loginOverlay) loginOverlay.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

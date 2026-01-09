@@ -1,5 +1,5 @@
 // --- Configuration ---
-const COOKIE_EXPIRY_HOURS = 24; // Default expiration time in hours
+const COOKIE_EXPIRY_HOURS = 1; // Default expiration time in hours
 
 /**
  * Sets a value in localStorage with a configurable expiration time.
@@ -26,16 +26,38 @@ function getCookie(key) {
     const itemStr = localStorage.getItem(key);
     if (!itemStr) return null;
 
-    const item = JSON.parse(itemStr);
-    const now = new Date();
+    try {
+        const item = JSON.parse(itemStr);
+        const now = new Date();
 
-    // Check if expired
-    if (now.getTime() > item.expiry) {
-        localStorage.removeItem(key); // Delete expired item
+        // Check if this is a valid cookie (has expiry property)
+        if (!item.expiry || typeof item.expiry !== 'number') {
+            // Not a valid cookie, remove it
+            localStorage.removeItem(key);
+            return null;
+        }
+
+        // Check if expired
+        if (now.getTime() > item.expiry) {
+            localStorage.removeItem(key); // Delete expired item
+            console.log(`Cookie expired: ${key}`);
+            
+            // If currentUser expired, redirect to login
+            if (key === 'currentUser') {
+                console.log('Session expired. Redirecting to login...');
+                window.location.href = 'login.html';
+            }
+            
+            return null;
+        }
+
+        return item.value;
+    } catch (e) {
+        // Invalid JSON or parsing error, remove the item
+        console.error(`Error parsing cookie ${key}:`, e);
+        localStorage.removeItem(key);
         return null;
     }
-
-    return item.value;
 }
 
 /**
@@ -46,9 +68,58 @@ function deleteCookie(key) {
     localStorage.removeItem(key);
 }
 
-// Example usage integration for your auth.js logic:
-// Instead of: localStorage.setItem('currentUser', JSON.stringify(user));
-// Use: setCookie('currentUser', user); // Uses the configured hour limit
+/**
+ * Checks all stored cookies for expiration and removes expired ones.
+ * Specifically ensures currentUser is cleared if expired.
+ * This function should be called at the start of every page load.
+ * MUST RUN BEFORE any other code accesses getCookie('currentUser')
+ */
+function validateAllCookies() {
+    const now = new Date();
+    const keys = Object.keys(localStorage);
+    let currentUserExpired = false;
 
-// Instead of: const user = JSON.parse(localStorage.getItem('currentUser'));
-// Use: const user = getCookie('currentUser');
+    keys.forEach(key => {
+        const itemStr = localStorage.getItem(key);
+        if (!itemStr) return;
+
+        try {
+            const item = JSON.parse(itemStr);
+            
+            // Check if this item has an expiry time (is a cookie, not regular data)
+            if (item.expiry && typeof item.expiry === 'number') {
+                // If expired, remove it
+                if (now.getTime() > item.expiry) {
+                    localStorage.removeItem(key);
+                    console.log(`Cookie expired and removed: ${key}`);
+                    
+                    // Mark if currentUser expired
+                    if (key === 'currentUser') {
+                        currentUserExpired = true;
+                    }
+                }
+            }
+        } catch (e) {
+            // Not a valid cookie format, skip
+            console.error(`Error validating cookie ${key}:`, e);
+        }
+    });
+
+    // If currentUser expired, redirect to login
+    if (currentUserExpired) {
+        console.log('Session expired. Redirecting to login...');
+        window.location.href = 'login.html';
+    }
+}
+
+/**
+ * Initialize cookie validation on page load IMMEDIATELY
+ * This MUST run synchronously before any DOM content loads
+ */
+(function() {
+    // Run validation immediately, before anything else
+    validateAllCookies();
+})();
+
+// Also run on DOMContentLoaded as a backup
+document.addEventListener('DOMContentLoaded', validateAllCookies);

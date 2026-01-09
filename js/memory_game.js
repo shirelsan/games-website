@@ -1,354 +1,338 @@
-// Memory Game Logic
+// --- Configuration ---
+const GAME_NAME = 'Color Memory';
+const PEAK_SCORE_THRESHOLD = 6; // Peak if completed more than 6 sequences
 
-class MemoryGame {
-    constructor() {
-        // Game State
-        this.sequence = [];
-        this.playerSequence = [];
-        this.level = 1;
-        this.isPlaying = false;
-        this.isPlayerTurn = false;
-        this.combo = 0;
-        this.highScore = this.loadHighScore();
-        this.difficulty = 'medium';
-        
-        // Difficulty Settings
-        this.difficulties = {
-            easy: { 
-                startLength: 3, 
-                flashSpeed: 800, 
-                gapSpeed: 400,
-                speedIncrease: 0
-            },
-            medium: { 
-                startLength: 3, 
-                flashSpeed: 600, 
-                gapSpeed: 300,
-                speedIncrease: 20
-            },
-            hard: { 
-                startLength: 4, 
-                flashSpeed: 400, 
-                gapSpeed: 200,
-                speedIncrease: 30
-            }
-        };
+// --- Game State ---
+let gameState = {
+    sequence: [],
+    playerSequence: [],
+    level: 1,
+    isPlaying: false,
+    isPlayerTurn: false,
+    difficulty: 'medium',
+    startTime: null // Store when the game session started
+};
 
-        // Colors
-        this.colors = ['red', 'blue', 'green', 'yellow'];
-        
-        // DOM Elements
-        this.colorButtons = document.querySelectorAll('.color-button');
-        this.startBtn = document.getElementById('startBtn');
-        this.resetBtn = document.getElementById('resetBtn');
-        this.levelDisplay = document.getElementById('levelDisplay');
-        this.sequenceLengthDisplay = document.getElementById('sequenceLength');
-        this.highScoreDisplay = document.getElementById('highScore');
-        this.comboDisplay = document.getElementById('comboDisplay');
-        this.statusMessage = document.getElementById('statusMessage');
-        this.progressBar = document.getElementById('progressBar');
-        this.difficultyButtons = document.querySelectorAll('.difficulty-btn');
+// --- Difficulty Settings ---
+const difficulties = {
+    easy: { 
+        startLength: 3, 
+        flashSpeed: 800, 
+        gapSpeed: 400,
+        speedIncrease: 0
+    },
+    medium: { 
+        startLength: 3, 
+        flashSpeed: 600, 
+        gapSpeed: 300,
+        speedIncrease: 20
+    },
+    hard: { 
+        startLength: 4, 
+        flashSpeed: 400, 
+        gapSpeed: 200,
+        speedIncrease: 30
+    }
+};
 
-        // Initialize
-        this.init();
+// --- Colors ---
+const colors = ['red', 'blue', 'green', 'yellow'];
+
+// --- DOM Elements ---
+const colorButtons = document.querySelectorAll('.color-button');
+const startBtn = document.getElementById('startBtn');
+const resetBtn = document.getElementById('resetBtn');
+const levelDisplay = document.getElementById('levelDisplay');
+const sequenceLengthDisplay = document.getElementById('sequenceLength');
+const statusMessage = document.getElementById('statusMessage');
+const progressBar = document.getElementById('progressBar');
+const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+
+// --- Initialization ---
+function init() {
+    // Add event listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+    
+    colorButtons.forEach(btn => {
+        btn.addEventListener('click', handleColorClick);
+    });
+
+    difficultyButtons.forEach(btn => {
+        btn.addEventListener('click', changeDifficulty);
+    });
+
+    // Update initial display
+    updateDisplay();
+}
+
+function startGame() {
+    if (gameState.isPlaying) return;
+    
+    gameState.isPlaying = true;
+    gameState.level = 1;
+    gameState.sequence = [];
+    gameState.startTime = new Date().toLocaleString('he-IL');
+    startBtn.disabled = true;
+    
+    updateStatus('שים לב לרצף...', 'info');
+    disableColorButtons();
+    
+    setTimeout(() => {
+        nextRound();
+    }, 1000);
+}
+
+function nextRound() {
+    gameState.playerSequence = [];
+    addToSequence();
+    updateDisplay();
+    
+    setTimeout(() => {
+        playSequence();
+    }, 500);
+}
+
+function addToSequence() {
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    gameState.sequence.push(randomColor);
+}
+
+async function playSequence() {
+    disableColorButtons();
+    updateStatus('שים לב לרצף...', 'info');
+    
+    const settings = difficulties[gameState.difficulty];
+    const flashSpeed = Math.max(200, settings.flashSpeed - (gameState.level * settings.speedIncrease));
+    const gapSpeed = Math.max(150, settings.gapSpeed - (gameState.level * settings.speedIncrease));
+
+    for (let i = 0; i < gameState.sequence.length; i++) {
+        await wait(gapSpeed);
+        await flashColor(gameState.sequence[i], flashSpeed);
     }
 
-    init() {
-        // Add event listeners
-        this.startBtn.addEventListener('click', () => this.startGame());
-        this.resetBtn.addEventListener('click', () => this.resetGame());
-        
-        this.colorButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => this.handleColorClick(e));
-        });
+    await wait(500);
+    gameState.isPlayerTurn = true;
+    enableColorButtons();
+    updateStatus('תורך! חזור על הרצף', 'info');
+    updateProgress(0);
+}
 
-        this.difficultyButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => this.changeDifficulty(e));
-        });
-
-        // Update initial display
-        this.updateDisplay();
-        this.updateHighScore();
-    }
-
-    startGame() {
-        if (this.isPlaying) return;
+function flashColor(color, duration) {
+    return new Promise(resolve => {
+        const button = document.querySelector(`[data-color="${color}"]`);
+        button.classList.add('flash');
         
-        this.isPlaying = true;
-        this.level = 1;
-        this.combo = 0;
-        this.sequence = [];
-        this.startBtn.disabled = true;
-        
-        this.updateStatus('שים לב לרצף...', 'info');
-        this.disableColorButtons();
+        // Play sound
+        playSound(color);
         
         setTimeout(() => {
-            this.nextRound();
-        }, 1000);
-    }
+            button.classList.remove('flash');
+            resolve();
+        }, duration);
+    });
+}
 
-    nextRound() {
-        this.playerSequence = [];
-        this.addToSequence();
-        this.updateDisplay();
-        
-        setTimeout(() => {
-            this.playSequence();
-        }, 500);
-    }
+function playSound(color) {
+    // Frequencies for different colors
+    const frequencies = {
+        red: 261.63,    // C
+        blue: 329.63,   // E
+        green: 392.00,  // G
+        yellow: 523.25  // C (higher)
+    };
 
-    addToSequence() {
-        const randomColor = this.colors[Math.floor(Math.random() * this.colors.length)];
-        this.sequence.push(randomColor);
-    }
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
 
-    async playSequence() {
-        this.disableColorButtons();
-        this.updateStatus('שים לב לרצף...', 'info');
-        
-        const settings = this.difficulties[this.difficulty];
-        const flashSpeed = Math.max(200, settings.flashSpeed - (this.level * settings.speedIncrease));
-        const gapSpeed = Math.max(150, settings.gapSpeed - (this.level * settings.speedIncrease));
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
 
-        for (let i = 0; i < this.sequence.length; i++) {
-            await this.wait(gapSpeed);
-            await this.flashColor(this.sequence[i], flashSpeed);
-        }
+        oscillator.frequency.value = frequencies[color];
+        oscillator.type = 'sine';
 
-        await this.wait(500);
-        this.isPlayerTurn = true;
-        this.enableColorButtons();
-        this.updateStatus('תורך! חזור על הרצף', 'info');
-        this.updateProgress(0);
-    }
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
 
-    flashColor(color, duration) {
-        return new Promise(resolve => {
-            const button = document.querySelector(`[data-color="${color}"]`);
-            button.classList.add('flash');
-            
-            // Play sound (optional - you can add sound effects here)
-            this.playSound(color);
-            
-            setTimeout(() => {
-                button.classList.remove('flash');
-                resolve();
-            }, duration);
-        });
-    }
-
-    playSound(color) {
-        // Optional: Add sound effects using Web Audio API
-        // Frequencies for different colors
-        const frequencies = {
-            red: 261.63,    // C
-            blue: 329.63,   // E
-            green: 392.00,  // G
-            yellow: 523.25  // C (higher)
-        };
-
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            oscillator.frequency.value = frequencies[color];
-            oscillator.type = 'sine';
-
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
-        } catch (e) {
-            // Audio not supported or blocked
-        }
-    }
-
-    handleColorClick(e) {
-        if (!this.isPlayerTurn || !this.isPlaying) return;
-        
-        const color = e.target.dataset.color;
-        this.playerSequence.push(color);
-        
-        // Flash the clicked color
-        e.target.classList.add('flash');
-        this.playSound(color);
-        setTimeout(() => e.target.classList.remove('flash'), 300);
-        
-        // Check if correct
-        const currentIndex = this.playerSequence.length - 1;
-        
-        if (this.playerSequence[currentIndex] !== this.sequence[currentIndex]) {
-            this.gameOver();
-            return;
-        }
-
-        // Update progress
-        const progress = (this.playerSequence.length / this.sequence.length) * 100;
-        this.updateProgress(progress);
-
-        // Check if sequence is complete
-        if (this.playerSequence.length === this.sequence.length) {
-            this.roundComplete();
-        }
-    }
-
-    roundComplete() {
-        this.isPlayerTurn = false;
-        this.disableColorButtons();
-        this.combo++;
-        this.level++;
-        
-        this.updateStatus('מעולה! 🎉', 'success');
-        this.updateProgress(100);
-        
-        // Check for new high score
-        if (this.level - 1 > this.highScore) {
-            this.highScore = this.level - 1;
-            this.saveHighScore();
-            this.updateHighScore();
-            this.updateStatus('שיא חדש! 🏆', 'success');
-        }
-
-        setTimeout(() => {
-            this.nextRound();
-        }, 2000);
-    }
-
-    gameOver() {
-        this.isPlaying = false;
-        this.isPlayerTurn = false;
-        this.disableColorButtons();
-        this.startBtn.disabled = false;
-        
-        this.updateStatus(`המשחק נגמר! הגעת לשלב ${this.level}`, 'error');
-        this.updateProgress(0);
-        
-        // Save score to user stats if logged in
-        this.saveGameStats();
-    }
-
-    resetGame() {
-        this.isPlaying = false;
-        this.isPlayerTurn = false;
-        this.sequence = [];
-        this.playerSequence = [];
-        this.level = 1;
-        this.combo = 0;
-        this.startBtn.disabled = false;
-        
-        this.enableColorButtons();
-        this.updateDisplay();
-        this.updateStatus('לחץ על "התחל משחק" כדי להתחיל!', 'info');
-        this.updateProgress(0);
-    }
-
-    changeDifficulty(e) {
-        if (this.isPlaying) return;
-        
-        this.difficultyButtons.forEach(btn => btn.classList.remove('active'));
-        e.currentTarget.classList.add('active');
-        this.difficulty = e.currentTarget.dataset.difficulty;
-        
-        this.resetGame();
-    }
-
-    disableColorButtons() {
-        this.colorButtons.forEach(btn => btn.disabled = true);
-    }
-
-    enableColorButtons() {
-        this.colorButtons.forEach(btn => btn.disabled = false);
-    }
-
-    updateDisplay() {
-        this.levelDisplay.textContent = this.level;
-        this.sequenceLengthDisplay.textContent = this.sequence.length || this.difficulties[this.difficulty].startLength;
-        this.comboDisplay.textContent = this.combo;
-    }
-
-    updateStatus(message, type = 'info') {
-        this.statusMessage.textContent = message;
-        this.statusMessage.className = 'status-message';
-        if (type !== 'info') {
-            this.statusMessage.classList.add(type);
-        }
-    }
-
-    updateProgress(percent) {
-        this.progressBar.style.width = `${percent}%`;
-    }
-
-    updateHighScore() {
-        this.highScoreDisplay.textContent = this.highScore;
-    }
-
-    loadHighScore() {
-        const saved = localStorage.getItem('memoryGameHighScore');
-        return saved ? parseInt(saved) : 0;
-    }
-
-    saveHighScore() {
-        localStorage.setItem('memoryGameHighScore', this.highScore.toString());
-    }
-
-    saveGameStats() {
-        // Save to user profile if logged in
-        try {
-            const currentUser = getCookie('currentUser');
-            if (currentUser && currentUser.username) {
-                const stats = {
-                    game: 'memory',
-                    level: this.level,
-                    date: new Date().toISOString(),
-                    difficulty: this.difficulty
-                };
-                
-                // Get existing stats
-                const userStatsKey = `gameStats_${currentUser.username}`;
-                let allStats = JSON.parse(localStorage.getItem(userStatsKey) || '[]');
-                allStats.push(stats);
-                
-                // Keep only last 50 games
-                if (allStats.length > 50) {
-                    allStats = allStats.slice(-50);
-                }
-                
-                localStorage.setItem(userStatsKey, JSON.stringify(allStats));
-            }
-        } catch (e) {
-            console.log('Could not save stats:', e);
-        }
-    }
-
-    wait(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+    } catch (e) {
+        // Audio not supported or blocked
     }
 }
 
-// Initialize game when page loads
+function handleColorClick(e) {
+    if (!gameState.isPlayerTurn || !gameState.isPlaying) return;
+    
+    const color = e.target.dataset.color;
+    gameState.playerSequence.push(color);
+    
+    // Flash the clicked color
+    e.target.classList.add('flash');
+    playSound(color);
+    setTimeout(() => e.target.classList.remove('flash'), 300);
+    
+    // Check if correct
+    const currentIndex = gameState.playerSequence.length - 1;
+    
+    if (gameState.playerSequence[currentIndex] !== gameState.sequence[currentIndex]) {
+        gameOver();
+        return;
+    }
+
+    // Update progress
+    const progress = (gameState.playerSequence.length / gameState.sequence.length) * 100;
+    updateProgress(progress);
+
+    // Check if sequence is complete
+    if (gameState.playerSequence.length === gameState.sequence.length) {
+        roundComplete();
+    }
+}
+
+function roundComplete() {
+    gameState.isPlayerTurn = false;
+    disableColorButtons();
+
+    console.log('Updating existing score entry in level:', gameState.level);
+    // Save score for every sequence completed
+    if (gameState.level > 1){
+        saveScore(false); // Update existing entry
+    } else {
+        saveScore(true); // Create new entry
+    }
+
+    gameState.level++;
+    
+    updateStatus('מעולה! 🎉', 'success');
+    updateProgress(100);
+
+    setTimeout(() => {
+        nextRound();
+    }, 2000);
+}
+
+function gameOver() {
+    gameState.isPlaying = false;
+    gameState.isPlayerTurn = false;
+    disableColorButtons();
+    startBtn.disabled = false;
+    
+    updateStatus(`המשחק נגמר! הגעת לשלב ${gameState.level}`, 'error');
+    updateProgress(0);
+}
+
+function resetGame() {
+    gameState.isPlaying = false;
+    gameState.isPlayerTurn = false;
+    gameState.sequence = [];
+    gameState.playerSequence = [];
+    gameState.level = 1;
+    startBtn.disabled = false;
+    
+    enableColorButtons();
+    updateDisplay();
+    updateStatus('לחץ על "התחל משחק" כדי להתחיל!', 'info');
+    updateProgress(0);
+}
+
+function changeDifficulty(e) {
+    if (gameState.isPlaying) return;
+    
+    difficultyButtons.forEach(btn => btn.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    gameState.difficulty = e.currentTarget.dataset.difficulty;
+    
+    resetGame();
+}
+
+// --- View Manipulation Functions ---
+function disableColorButtons() {
+    colorButtons.forEach(btn => btn.disabled = true);
+}
+
+function enableColorButtons() {
+    colorButtons.forEach(btn => btn.disabled = false);
+}
+
+function updateDisplay() {
+    levelDisplay.textContent = gameState.level;
+    sequenceLengthDisplay.textContent = gameState.sequence.length || difficulties[gameState.difficulty].startLength;
+}
+
+function updateStatus(message, type = 'info') {
+    statusMessage.textContent = message;
+    statusMessage.className = 'status-message';
+    if (type !== 'info') {
+        statusMessage.classList.add(type);
+    }
+}
+
+function updateProgress(percent) {
+    progressBar.style.width = `${percent}%`;
+}
+
+function saveScore(isNewSession) {
+    // Get current user from localStorage
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+    if (!currentUser) {
+        console.log('No user logged in. Cannot save score.');
+        return;
+    }
+    console.log('Saving score for user:', currentUser.value.username);
+
+    // Ensure gamesHistory structure exists
+    if (!currentUser.value.gamesHistory) {
+        currentUser.value.gamesHistory = {};
+    }
+    
+    // Ensure game array exists
+    if (!currentUser.value.gamesHistory[GAME_NAME]) {
+        currentUser.value.gamesHistory[GAME_NAME] = [];
+    }
+
+    // Create score entry
+    const scoreEntry = {
+        score: gameState.level - 1, // Number of sequences completed
+        date: gameState.startTime,
+        isPeak: (gameState.level - 1) >= PEAK_SCORE_THRESHOLD
+    };
+
+    if (isNewSession) {
+        // New game session: Push new entry
+        currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
+    } else {
+        console.log('Updating existing score entry for user:', currentUser.value.username);
+        currentUser.value.gamesHistory[GAME_NAME].pop();
+        currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
+    }
+    
+    // Update user in localStorage (list of users)
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const userIndex = users.findIndex(u => u.value.username === currentUser.value.username);
+    
+    if (userIndex !== -1) {
+        users[userIndex] = currentUser;
+        localStorage.setItem('users', JSON.stringify(users));
+        console.log('Updated users in localStorage', gameState.score);
+    }
+    
+    // Update current user session
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+}
+
+// --- Helper Functions ---
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// --- Initialize game when page loads ---
 document.addEventListener('DOMContentLoaded', () => {
-    const game = new MemoryGame();
+    init();
     
     // Reinitialize Lucide icons
     lucide.createIcons();
 });
-
-// Helper function to get cookie (if not already defined)
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-        try {
-            return JSON.parse(decodeURIComponent(parts.pop().split(';').shift()));
-        } catch (e) {
-            return null;
-        }
-    }
-    return null;
-}

@@ -213,7 +213,6 @@ body {
     padding: 1rem;
     background: linear-gradient(135deg, #e8f8f5 0%, #fff5e6 100%);
     border-radius: 16px;
-    margin-bottom: 1.5rem;
     min-height: 60px;
     display: flex;
     align-items: center;
@@ -238,6 +237,7 @@ body {
     border-radius: 10px;
     overflow: hidden;
     position: relative;
+    margin: 5px 0 20px 0;
 }
 
 .progress-bar {
@@ -320,8 +320,8 @@ body {
 .difficulty-panel {
     background: white;
     border-radius: var(--radius-lg);
-    padding: 2rem;
-    margin-bottom: 2rem;
+    padding: 5px;
+    margin-bottom: 3px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.05);
 }
 

@@ -103,7 +103,12 @@ function handleRegister(event) {
     }
 
     // יצירת משתמש ושמירה
-    const newUser = { name, username, password, highScores: [] };
+    const newUser = { 
+        name, 
+        username, 
+        password, 
+        gamesHistory: {} // Initialize empty gamesHistory for score tracking
+    };
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
 
