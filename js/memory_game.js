@@ -282,16 +282,16 @@ function saveScore(isNewSession) {
         console.log('No user logged in. Cannot save score.');
         return;
     }
-    console.log('Saving score for user:', currentUser.value.username);
+    console.log('Saving score for user:', currentUser.username);
 
     // Ensure gamesHistory structure exists
-    if (!currentUser.value.gamesHistory) {
-        currentUser.value.gamesHistory = {};
+    if (!currentUser.gamesHistory) {
+        currentUser.gamesHistory = {};
     }
     
     // Ensure game array exists
-    if (!currentUser.value.gamesHistory[GAME_NAME]) {
-        currentUser.value.gamesHistory[GAME_NAME] = [];
+    if (!currentUser.gamesHistory[GAME_NAME]) {
+        currentUser.gamesHistory[GAME_NAME] = [];
     }
 
     // Create score entry
@@ -303,16 +303,16 @@ function saveScore(isNewSession) {
 
     if (isNewSession) {
         // New game session: Push new entry
-        currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
+        currentUser.gamesHistory[GAME_NAME].push(scoreEntry);
     } else {
-        console.log('Updating existing score entry for user:', currentUser.value.username);
-        currentUser.value.gamesHistory[GAME_NAME].pop();
-        currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
+        console.log('Updating existing score entry for user:', currentUser.username);
+        currentUser.gamesHistory[GAME_NAME].pop();
+        currentUser.gamesHistory[GAME_NAME].push(scoreEntry);
     }
     
     // Update user in localStorage (list of users)
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userIndex = users.findIndex(u => u.value.username === currentUser.value.username);
+    const userIndex = users.findIndex(u => u.username === currentUser.username);
     
     if (userIndex !== -1) {
         users[userIndex] = currentUser;

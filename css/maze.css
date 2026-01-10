@@ -245,3 +245,81 @@ body {
     from { transform: scale(0.9); box-shadow: 0 0 5px #f1c40f; }
     to { transform: scale(1.1); box-shadow: 0 0 15px #f1c40f; }
 }
+
+/* --- Login Overlay Styles --- */
+.login-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.login-overlay.active {
+    display: flex;
+}
+
+.login-overlay-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease-out;
+}
+
+.login-overlay-content h2 {
+    color: #2D3436;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.login-overlay-content p {
+    color: #636E72;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.btn-login {
+    display: inline-block;
+    background-color: #FF9F1C;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-login:hover {
+    background-color: #FF8C00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 159, 28, 0.4);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

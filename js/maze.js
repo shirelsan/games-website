@@ -594,14 +594,14 @@ function saveScore(isNewSession) {
     }
 
     // Ensure gamesHistory structure exists
-    if (!currentUser.value.gamesHistory) {
-        currentUser.value.gamesHistory = {};
-        console.log('Initialized gamesHistory for user.');
-    }
+    // if (!currentUser.gamesHistory) {
+    //     currentUser.gamesHistory = {};
+    //     console.log('Initialized gamesHistory for user.');
+    // }
     
     // Ensure specific game array exists
-    if (!currentUser.value.gamesHistory[GAME_NAME]) {
-        currentUser.value.gamesHistory[GAME_NAME] = [];
+    if (!currentUser.gamesHistory[GAME_NAME]) {
+        currentUser.gamesHistory[GAME_NAME] = [];
         console.log('Initialized gamesHistory array for', GAME_NAME);
     }
 
@@ -614,15 +614,17 @@ function saveScore(isNewSession) {
 
     if (isNewSession) {
         // New game session: Push new entry
-        currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
+        currentUser.gamesHistory[GAME_NAME].push(scoreEntry);
+        console.log('Pushed new score entry for user:', currentUser.username);
     } else {
-        currentUser.value.gamesHistory[GAME_NAME].pop();
-        currentUser.value.gamesHistory[GAME_NAME].push(scoreEntry);
+        currentUser.gamesHistory[GAME_NAME].pop();
+        currentUser.gamesHistory[GAME_NAME].push(scoreEntry);
+        console.log('Popped and Pushed last score entry for user:', currentUser.username);
     }
 
     // Update User in LocalStorage (list of users)
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userIndex = users.findIndex(u => u.value.username === currentUser.value.username);
+    const userIndex = users.findIndex(u => u.username === currentUser.username);
     
     if (userIndex !== -1) {
         users[userIndex] = currentUser;
