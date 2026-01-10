@@ -15,7 +15,8 @@ let gameState = {
     enemyInterval: null,
     playerX: 0,
     playerY: 0,
-    startTime: null // Store when the specific game session started
+    startTime: null, // Store when the specific game session started
+    sessionLevelCount: 0 // Track how many levels completed in THIS session (independent of difficulty)
 };
 
 // --- Elements ---
@@ -145,6 +146,7 @@ function startGame(difficulty) {
     gameState.difficulty = difficulty;
     gameState.score = 0;
     gameState.isPlaying = true;
+    gameState.sessionLevelCount = 0; // Reset session level counter for new game
     
     // Set the start time for this session (Date and Hour)
     gameState.startTime = new Date().toLocaleString('he-IL'); 
@@ -508,10 +510,13 @@ function levelComplete() {
     // Reward points
     gameState.score += 50;
     
+    // Increment session level counter BEFORE saving
+    gameState.sessionLevelCount++;
+    
     // Save score immediately upon level completion
-    // If it's the first level completion of the session, we push new.
-    // If it's subsequent levels, we update the last entry.
-    if (gameState.level > 1){
+    // If it's the first level completed in this session, push new entry
+    // If it's subsequent levels, update the last entry by popping and pushing
+    if (gameState.sessionLevelCount > 1){
         saveScore(false); // Update existing entry
     } else {
         saveScore(true); // Create new entry

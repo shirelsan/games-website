@@ -1,6 +1,6 @@
 // --- Configuration ---
 const GAME_NAME = 'Color Memory';
-const PEAK_SCORE_THRESHOLD = 6; // Peak if completed more than 6 sequences
+const PEAK_SCORE_THRESHOLD = 60; // Peak if scored 60 points or more (6 sequences × 10 points)
 
 // --- Game State ---
 let gameState = {
@@ -43,7 +43,7 @@ const colorButtons = document.querySelectorAll('.color-button');
 const startBtn = document.getElementById('startBtn');
 const resetBtn = document.getElementById('resetBtn');
 const levelDisplay = document.getElementById('levelDisplay');
-const sequenceLengthDisplay = document.getElementById('sequenceLength');
+const scoreDisplay = document.getElementById('scoreDisplay');
 const statusMessage = document.getElementById('statusMessage');
 const progressBar = document.getElementById('progressBar');
 const difficultyButtons = document.querySelectorAll('.difficulty-btn');
@@ -220,7 +220,7 @@ function gameOver() {
     disableColorButtons();
     startBtn.disabled = false;
     
-    updateStatus(`המשחק נגמר! הגעת לשלב ${gameState.level}`, 'error');
+    updateStatus(`המשחק נגמר!`, 'error');
     updateProgress(0);
 }
 
@@ -259,7 +259,7 @@ function enableColorButtons() {
 
 function updateDisplay() {
     levelDisplay.textContent = gameState.level;
-    sequenceLengthDisplay.textContent = gameState.sequence.length || difficulties[gameState.difficulty].startLength;
+    scoreDisplay.textContent = (gameState.level-1) * 10;
 }
 
 function updateStatus(message, type = 'info') {
@@ -295,10 +295,12 @@ function saveScore(isNewSession) {
     }
 
     // Create score entry
+    // Calculate score: 10 points per completed sequence
+    const completedSequences = gameState.level;
     const scoreEntry = {
-        score: gameState.level - 1, // Number of sequences completed
+        score: completedSequences * 10, // 10 points per completed sequence
         date: gameState.startTime,
-        isPeak: (gameState.level - 1) >= PEAK_SCORE_THRESHOLD
+        isPeak: (completedSequences * 10) >= PEAK_SCORE_THRESHOLD
     };
 
     if (isNewSession) {

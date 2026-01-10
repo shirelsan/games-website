@@ -107,7 +107,10 @@ function handleRegister(event) {
         name, 
         username, 
         password, 
-        gamesHistory: {} // Initialize empty gamesHistory for score tracking
+        gamesHistory: {}, // Initialize empty gamesHistory for score tracking
+        failedAttempts: 0, // Track failed login attempts
+        isLocked: false, // Account lock status
+        lockedUntil: null // Time when account will be auto-unlocked (null = no lock)
     };
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
@@ -130,18 +133,71 @@ function handleLogin(event) {
     let users = JSON.parse(localStorage.getItem('users')) || [];
     
     // חיפוש המשתמש
-    const user = users.find(u => u.username === username && u.password === password);
+    const user = users.find(u => u.username === username);
 
-    if (user) {
+    // Check if account is locked
+    if (user && user.isLocked) {
+        const now = Date.now();
+        
+        // Check if lock time has expired (30 minutes = 30 * 60 * 1000 ms)
+        if (user.lockedUntil && now > user.lockedUntil) {
+            // Auto-unlock account
+            user.isLocked = false;
+            user.failedAttempts = 0;
+            user.lockedUntil = null;
+            users[users.indexOf(user)] = user;
+            localStorage.setItem('users', JSON.stringify(users));
+            showMessage("החשבון נפתח. אנא נסה להתחבר שוב.", "success");
+            return;
+        } else {
+            // Still locked - show time remaining
+            const timeLeft = Math.ceil((user.lockedUntil - now) / 1000 / 60); // Minutes
+            showMessage(`החשבון חסום. אנא נסה שוב תוך ${timeLeft} דקות.`, "error");
+            return;
+        }
+    }
+
+    // Check credentials
+    if (user && user.password === password) {
+        // Successful login - reset failed attempts
+        user.failedAttempts = 0;
+        users[users.indexOf(user)] = user;
+        localStorage.setItem('users', JSON.stringify(users));
+
         setCookie('currentUser', user);
         showMessage("התחברת בהצלחה! ברוך הבא " + user.name, "success");
         
-        // --- התיקון כאן: מעבר לעמוד הבית אחרי 1.5 שניות ---
+        // --- Navigate to home page after 1.5 seconds ---
         setTimeout(() => {
             window.location.href = "index.html"; 
         }, 1500);
 
     } else {
-        showMessage("שם משתמש או סיסמה שגויים", "error");
+        // Failed login attempt
+        if (user) {
+            // Initialize failedAttempts if not exists
+            if (!user.failedAttempts) {
+                user.failedAttempts = 0;
+            }
+            
+            // Increment failed attempts
+            user.failedAttempts++;
+            
+            // Lock account if 5 failed attempts reached
+            if (user.failedAttempts >= 5) {
+                user.isLocked = true;
+                user.lockedUntil = Date.now() + (30 * 60 * 1000); // Lock for 30 minutes
+                users[users.indexOf(user)] = user;
+                localStorage.setItem('users', JSON.stringify(users));
+                showMessage("החשבון חסום לתקופה של 30 דקות עקב 5 ניסיונות כניסה כושלים.", "error");
+            } else {
+                users[users.indexOf(user)] = user;
+                localStorage.setItem('users', JSON.stringify(users));
+                const attemptsLeft = 5 - user.failedAttempts;
+                showMessage(`שם משתמש או סיסמה שגויים. ${attemptsLeft} ניסיונות נותרו`, "error");
+            }
+        } else {
+            showMessage("שם משתמש או סיסמה שגויים", "error");
+        }
     }
 }
