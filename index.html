@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="css/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
         
-        <!-- Lucide Icons -->
         <script src="https://unpkg.com/lucide@latest"></script>
         <link rel="icon" type="image/png" href="images/logo.png">
     </head>
@@ -71,9 +70,48 @@
             </div>
         </section>
 
+        <section class="leaderboard-section">
+            <div class="section-header center-header">
+                <h2 class="section-title"> שלושת הגדולים 🏆</h2>
+                <p>השחקנים שצברו הכי הרבה נקודות בכל הזמנים</p>
+            </div>
+
+            <div class="podium-container" id="leaderboardContainer">
+                <div class="podium-card silver">
+                    <div class="trophy-icon"><i data-lucide="medal"></i></div>
+                    <div class="podium-avatar">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=silver" alt="2nd Place">
+                    </div>
+                    <div class="podium-rank">#2</div>
+                    <h3 class="podium-name">---</h3>
+                    <div class="podium-score">0 נק'</div>
+                </div>
+
+                <div class="podium-card gold">
+                    <div class="trophy-icon"><i data-lucide="trophy"></i></div>
+                    <div class="podium-avatar">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=gold" alt="1st Place">
+                    </div>
+                    <div class="podium-rank">#1</div>
+                    <h3 class="podium-name">---</h3>
+                    <div class="podium-score">0 נק'</div>
+                </div>
+
+                <div class="podium-card bronze">
+                    <div class="trophy-icon"><i data-lucide="medal"></i></div>
+                    <div class="podium-avatar">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=bronze" alt="3rd Place">
+                    </div>
+                    <div class="podium-rank">#3</div>
+                    <h3 class="podium-name">---</h3>
+                    <div class="podium-score">0 נק'</div>
+                </div>
+            </div>
+        </section>
+
         <main id="games" class="games-container">
             <div class="section-header">
-                <h2 class="section-title">הקולקציה של המשחקים שלנו</h2>
+                <h2 class="section-title">המשחקים שלנו</h2>
             </div>
 
             <div class="games-grid">
@@ -82,7 +120,7 @@
                     <img src="images/pacman_img.jpg" alt="Maze Game">
                     <div class="card-content">
                         <h3>הבריחה מהמבוך</h3>
-                        <p>איכלו את כל הנקודות והיזהרו מהרוחות במבוך המאתגר.</p>
+                        <p>אספו את הנקודות והיזהרו מהמוקשים במבוך המאתגר.</p>
                         <a href="maze.html" class="play-button">שחק עכשיו</a>
                     </div>
                 </article>
@@ -157,10 +195,10 @@
                 else header.classList.remove('scrolled');
             });
 
-            // --- לוגיקת משתמש ---
+            // --- Main Logic ---
             document.addEventListener('DOMContentLoaded', () => {
-                const currentUser = getCookie('currentUser');
-                console.log('Current User:', currentUser);
+                // 1. טיפול במשתמש מחובר (הדר)
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 const loginBtn = document.getElementById('loginBtn');
                 const navUsername = document.getElementById('navUsername');
                 const avatarContainer = document.getElementById('avatarContainer');
@@ -171,9 +209,7 @@
                     navUsername.innerText = currentUser.name;
                     navUsername.style.display = 'block';
                     
-                    // מנקים את מחלקת האורח
                     avatarContainer.classList.remove('guest');
-                    // מכניסים תמונה
                     avatarContainer.innerHTML = `<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${currentUser.username}&backgroundColor=c0aede" alt="User">`;
                     
                 } else {
@@ -181,15 +217,76 @@
                     loginBtn.style.display = 'block';
                     navUsername.style.display = 'none';
                     
-                    // מוסיפים עיצוב של אורח
                     avatarContainer.classList.add('guest');
-                    // מכניסים את אייקון הרוח
                     avatarContainer.innerHTML = `<i data-lucide="ghost" class="ghost-icon-header"></i>`;
                     
-                    // חשוב! מפעילים את lucide שוב כדי שיהפוך את התגית לאייקון
                     lucide.createIcons();
                 }
+
+                // 2. הפעלת טבלת המובילים
+                loadLeaderboard();
             });
+
+            // --- Leaderboard Logic (החלק החדש והמתוקן) ---
+            function loadLeaderboard() {
+                // 1. קבלת כל המשתמשים
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                if (users.length === 0) return;
+
+                // 2. חישוב ציון כולל לכל משתמש
+                const rankedUsers = users.map(user => {
+                    let totalPoints = 0;
+
+                    // בדיקה אם למשתמש יש היסטוריית משחקים (gamesHistory)
+                    if (user.gamesHistory) {
+                        // gamesHistory הוא אובייקט (מפתח=שם משחק), עוברים על הערכים שלו
+                        Object.values(user.gamesHistory).forEach(gameSessions => {
+                            // gameSessions הוא מערך של משחקים ששוחקו
+                            if (Array.isArray(gameSessions)) {
+                                gameSessions.forEach(session => {
+                                    // הוספת הניקוד מכל סשן לסך הכולל
+                                    totalPoints += parseInt(session.score) || 0;
+                                });
+                            }
+                        });
+                    } 
+                    
+                    else if (user.highScores && Array.isArray(user.highScores)) {
+                        totalPoints = user.highScores.reduce((sum, s) => sum + (parseInt(s.score) || s), 0);
+                    }
+
+                    return {
+                        name: user.name || user.username,
+                        username: user.username,
+                        score: totalPoints
+                    };
+                });
+
+                // 3. מיון לפי ניקוד יורד (הכי גבוה ראשון)
+                rankedUsers.sort((a, b) => b.score - a.score);
+
+                // 4. עדכון ה-DOM (רק ל-3 הראשונים)
+                const top3 = rankedUsers.slice(0, 3);
+                
+                // עדכון המקום הראשון (Gold)
+                if (top3[0]) updatePodiumCard('gold', top3[0]);
+                // עדכון המקום השני (Silver)
+                if (top3[1]) updatePodiumCard('silver', top3[1]);
+                // עדכון המקום השלישי (Bronze)
+                if (top3[2]) updatePodiumCard('bronze', top3[2]);
+            }
+
+            function updatePodiumCard(type, user) {
+                // איתור הכרטיס לפי המחלקה (gold/silver/bronze)
+                const card = document.querySelector(`.podium-card.${type}`);
+                if (card) {
+                    card.querySelector('.podium-name').innerText = user.name;
+                    card.querySelector('.podium-score').innerText = user.score.toLocaleString() + ' נק\'';
+                    // עדכון תמונה לפי שם המשתמש
+                    card.querySelector('img').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}&backgroundColor=c0aede`;
+                }
+            }
         </script>
     </body>
 </html>

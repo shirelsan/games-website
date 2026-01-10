@@ -11,7 +11,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <!-- Login Required Overlay -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-overlay-content">
             <h2>נדרשת כניסה</h2>
@@ -70,7 +69,7 @@
     </main>
 
     <footer class="site-footer">
-        <p>© 2025 Fun&Games Website. All rights reserved</p>
+        <p>© 2026 Fun&Games Website. All rights reserved</p>
         <div class="follow-us">
             <span>Follow us on</span>
             <div class="social-icons">
@@ -81,22 +80,23 @@
     </footer>
 
     <script>lucide.createIcons();</script>
-    <script src="js/cookies.js"></script>
-    <script src="js/maze.js"></script>
-    <script>
-        // Check if user is logged in
+    
+    <script src="js/maze.js"></script> <script>
+        // בדיקת התחברות לפני הצגת המשחק
         document.addEventListener('DOMContentLoaded', () => {
-            const currentUser = getCookie('currentUser');
+            // שימוש ב-localStorage כדי להיות מסונכרן עם שאר המערכת
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
             const loginOverlay = document.getElementById('loginOverlay');
             const gameContainer = document.getElementById('gameContainer');
             const gameWrapper = document.querySelector('.game-wrapper');
             
             if (!currentUser) {
-                // Hide game content and show login overlay
+                // לא מחובר: הסתרת המשחק והצגת הודעת התחברות
                 if (gameWrapper) gameWrapper.style.display = 'none';
                 if (loginOverlay) loginOverlay.style.display = 'flex';
             } else {
-                // User is logged in, show game
+                // מחובר: הצגת המשחק
                 if (gameWrapper) gameWrapper.style.display = 'flex';
                 if (loginOverlay) loginOverlay.style.display = 'none';
             }
