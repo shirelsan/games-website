@@ -32,12 +32,10 @@ function updateProfileUI(user) {
     // --- Basic Info ---
     const nameEl = document.getElementById('displayName');
     const usernameEl = document.getElementById('displayUsername');
-    const dateEl = document.getElementById('joinDate');
     const avatarEl = document.getElementById('userAvatar');
 
     nameEl.textContent = user.name || user.username;
     usernameEl.textContent = user.username;
-    dateEl.textContent = user.joinDate || new Date().toLocaleDateString('he-IL');
 
     if (avatarEl) {
         avatarEl.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}&backgroundColor=c0aede`;
@@ -77,20 +75,6 @@ function updateProfileUI(user) {
             });
         }
     });
-
-    // Fallback: If using old highScores array (legacy support)
-    if (allSessions.length === 0 && user.highScores && user.highScores.length > 0) {
-        user.highScores.forEach(score => {
-            totalPoints += score;
-            totalGamesPlayed++;
-            allSessions.push({
-                gameName: 'משחק ישן',
-                score: score,
-                date: 'היסטוריה',
-                isPeak: false
-            });
-        });
-    }
 
     // Update Stats Bar
     pointsEl.textContent = totalPoints;
@@ -160,29 +144,32 @@ function updateProfileUI(user) {
 // Helper function to render HTML for a list of games
 function renderList(container, data, isPeakList) {
     if (!container) return;
-    container.innerHTML = '';
+    
+    const tbody = container.querySelector('tbody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
 
     if (data.length === 0) {
-        container.innerHTML = '<div class="empty-state">אין נתונים להצגה...</div>';
+        const row = document.createElement('tr');
+        row.className = 'empty-row';
+        row.innerHTML = '<td colspan="4" class="empty-state">עוד אין נתונים להציג כאן - המשחקים מחכים לך!</td>';
+        tbody.appendChild(row);
         return;
     }
 
     data.forEach(game => {
         const icon = isPeakList ? '🔥' : '🎮';
-        const highlightClass = isPeakList ? 'peak-item' : '';
+        const rowClass = isPeakList ? 'peak-row' : '';
         
-        const html = `
-            <div class="game-item ${highlightClass}">
-                <div class="game-info">
-                    <div class="game-icon">${icon}</div>
-                    <div>
-                        <div class="game-name">${game.gameName}</div>
-                        <div class="game-date">${game.date}</div>
-                    </div>
-                </div>
-                <div class="game-score">${game.score} נק'</div>
-            </div>
+        const row = document.createElement('tr');
+        row.className = rowClass;
+        row.innerHTML = `
+            <td class="col-icon"><span class="game-icon">${icon}</span></td>
+            <td class="col-name">${game.gameName}</td>
+            <td class="col-date">${game.date}</td>
+            <td class="col-score">${game.score} נק'</td>
         `;
-        container.innerHTML += html;
+        tbody.appendChild(row);
     });
 }

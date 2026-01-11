@@ -44,7 +44,6 @@
                     <div class="user-info">
                         <h1 id="displayName">שם משתמש</h1>
                         <p class="username">@<span id="displayUsername">username</span></p>
-                        <p class="join-date">הצטרף ב: <span id="joinDate"></span></p>
                     </div>
                 </div>
 
@@ -75,17 +74,37 @@
                     <!-- 1. Peak Games (Top 5) -->
                     <div class="list-section">
                         <h2>🔥 שיאים (Top 5)</h2>
-                        <div class="history-list" id="peakList">
-                            <!-- Injected via JS -->
-                        </div>
+                        <table class="games-table" id="peakList">
+                            <thead>
+                                <tr>
+                                    <th class="col-icon"></th>
+                                    <th class="col-name">משחק</th>
+                                    <th class="col-date">תאריך</th>
+                                    <th class="col-score">ניקוד</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Injected via JS -->
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- 2. Full History -->
                     <div class="list-section">
                         <h2>📜 היסטוריית משחקים</h2>
-                        <div class="history-list" id="historyList">
-                            <!-- Injected via JS -->
-                        </div>
+                        <table class="games-table" id="historyList">
+                            <thead>
+                                <tr>
+                                    <th class="col-icon"></th>
+                                    <th class="col-name">משחק</th>
+                                    <th class="col-date">תאריך</th>
+                                    <th class="col-score">ניקוד</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Injected via JS -->
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>

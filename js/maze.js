@@ -188,8 +188,8 @@ function loadLevel(levelIndex) {
     if (gameState.enemyInterval) clearInterval(gameState.enemyInterval);
 
     // Clear Board (keep player)
-    const removables = document.querySelectorAll('.wall, .enemy, .coin, .exit');
-    removables.forEach(el => el.remove());
+    const removablesElements = document.querySelectorAll('.wall, .enemy, .coin, .exit');
+    removablesElements.forEach(el => el.remove());
 
     // 1. Set Player Start
     gameState.playerX = 20;

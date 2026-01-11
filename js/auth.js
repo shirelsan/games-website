@@ -9,7 +9,7 @@ function showMessage(text, type) {
     
     // איפוס מלא
     msgBox.textContent = text;
-    msgBox.className = 'message-box'; // מוחק עיצובים קודמים
+    msgBox.className = 'message-box';
     
     // הוספת הצבע המתאים
     if (type === 'error') {
@@ -125,6 +125,7 @@ function handleRegister(event) {
 }
 
 function handleLogin(event) {
+    // Prevents form submission
     event.preventDefault();
 
     const username = document.getElementById('loginUser').value.trim();

@@ -93,7 +93,7 @@ body {
 /* Info Panel */
 .info-panel {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: 0.4fr 0.4fr 1.2fr;
     gap: 1rem;
     margin-bottom: 2rem;
 }
@@ -101,24 +101,37 @@ body {
 .info-card {
     background: white;
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
+    padding: 1rem 1rem 0rem 1rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    flex-direction: column;
     box-shadow: 0 10px 40px rgba(0,0,0,0.05);
     border: 2px solid transparent;
     transition: all 0.3s;
 }
 
-.info-card:hover {
+/* .info-card:hover {
     border-color: var(--primary);
     transform: translateY(-4px);
-}
+} */
 
 .info-card i {
     width: 40px;
     height: 40px;
     color: var(--primary);
+}
+
+.info-card:has(.difficulty-buttons) {
+    padding: 1rem; gap: 10px;
+}
+
+.info-card .info-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.info-card .difficulty-buttons {
+    width: 100%;
 }
 
 .info-content {
@@ -128,7 +141,7 @@ body {
 }
 
 .info-label {
-    font-size: 0.85rem;
+    font-size: 1.2rem;
     color: var(--text-gray);
     font-weight: 500;
 }
@@ -144,7 +157,7 @@ body {
 .game-board {
     background: white;
     border-radius: var(--radius-xl);
-    padding: 3rem;
+    padding: 0.8rem 3rem;
     box-shadow: 0 10px 40px rgba(0,0,0,0.08);
     margin-bottom: 2rem;
     border: 3px solid #f0f0f0;
@@ -210,7 +223,6 @@ body {
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--text-dark);
-    padding: 1rem;
     background: linear-gradient(135deg, #e8f8f5 0%, #fff5e6 100%);
     border-radius: 16px;
     min-height: 60px;
@@ -372,28 +384,13 @@ body {
 
 /* Instructions */
 .instructions {
-    background: linear-gradient(135deg, #e8f8f5 0%, #fff5e6 100%);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    border: 3px solid white;
-}
-
-.instructions h3 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--text-dark);
-}
-
-.instructions ol {
-    padding-right: 1.5rem;
-    color: var(--text-dark);
-}
-
-.instructions li {
-    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+    color: #636E72;
+    text-align: center;
+    padding: 3px 0;
+    margin: 5px 0;
     line-height: 1.6;
-    font-size: 1rem;
+    font-weight: 500;
 }
 
 /* Responsive */

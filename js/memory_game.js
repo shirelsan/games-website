@@ -16,21 +16,21 @@ let gameState = {
 // --- Difficulty Settings ---
 const difficulties = {
     easy: { 
-        startLength: 3, 
+        startLength: 2, 
         flashSpeed: 800, 
-        gapSpeed: 400,
+        gapSpeed: 300,
         speedIncrease: 0
     },
     medium: { 
         startLength: 3, 
         flashSpeed: 600, 
-        gapSpeed: 300,
+        gapSpeed: 200,
         speedIncrease: 20
     },
     hard: { 
         startLength: 4, 
         flashSpeed: 400, 
-        gapSpeed: 200,
+        gapSpeed: 100,
         speedIncrease: 30
     }
 };
@@ -75,11 +75,17 @@ function startGame() {
     gameState.startTime = new Date().toLocaleString('he-IL');
     startBtn.disabled = true;
     
+    // Initialize sequence with startLength colors based on difficulty
+    const settings = difficulties[gameState.difficulty];
+    for (let i = 0; i < settings.startLength; i++) {
+        addToSequence();
+    }
+    
     updateStatus('שים לב לרצף...', 'info');
     disableColorButtons();
     
     setTimeout(() => {
-        nextRound();
+        playSequence();
     }, 1000);
 }
 

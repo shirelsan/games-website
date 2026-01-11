@@ -37,7 +37,7 @@
             </div>
         </header>
 
-        <section class="intro-section">
+        <div class="intro-section">
             <div class="intro-text">
                 <h1>הגיע הזמן <br>
                     <span class="highlight-h1">לשחק בגדול.</span>
@@ -68,9 +68,9 @@
                 <i data-lucide="trophy" class="floating-icon icon-3"></i>
                 <i data-lucide="circle" class="floating-icon icon-4"></i>
             </div>
-        </section>
+        </div>
 
-        <section class="leaderboard-section">
+        <div class="leaderboard-section">
             <div class="section-header center-header">
                 <h2 class="section-title"> שלושת הגדולים 🏆</h2>
                 <p>השחקנים שצברו הכי הרבה נקודות בכל הזמנים</p>
@@ -107,7 +107,22 @@
                     <div class="podium-score">0 נק'</div>
                 </div>
             </div>
-        </section>
+
+            <!-- Current User Rank -->
+            <div class="user-rank-section" id="userRankSection" style="display: none;">
+                <div class="user-rank-card">
+                    <div class="rank-icon"><i data-lucide="user"></i></div>
+                    <div class="rank-info">
+                        <span class="rank-label">דירוגך</span>
+                        <span class="rank-value" id="userRankValue">#---</span>
+                    </div>
+                    <div class="rank-score">
+                        <span class="score-label">נקודות</span>
+                        <span class="score-value" id="userRankScore">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <main id="games" class="games-container">
             <div class="section-header">
@@ -117,8 +132,8 @@
             <div class="games-grid">
                 
                 <article class="game-card">
-                    <img src="images/pacman_img.jpg" alt="Maze Game">
                     <div class="card-content">
+                        <img src="images/maze.png" alt="Maze Game">
                         <h3>הבריחה מהמבוך</h3>
                         <p>אספו את הנקודות והיזהרו מהמוקשים במבוך המאתגר.</p>
                         <a href="maze.html" class="play-button">שחק עכשיו</a>
@@ -126,47 +141,47 @@
                 </article>
 
                 <article class="game-card">
-                    <img src="images/pacman_img.jpg" alt="Pacman">
                     <div class="card-content">
+                        <img src="images/color_memory.png" alt="Memory Game">
                         <h3>זיכרון צבעים באקסטרים</h3>
-                        <p>האם אתה מוכן להשתתף באתגר של זיכרון צבעים?</p>
+                        <p>האתגר המושלם לזיכרון שלכם! זכרו את רצף הצבעים והגיעו רחוק ככל שתוכלו.</p>
                         <a href="memory_game.html" class="play-button">שחק עכשיו</a>
                     </div>
                 </article>
                 
-                <article class="game-card">
-                    <img src="images/pacman_img.jpg" alt="Memory">
+                <article class="game-card soon">                    
                     <div class="card-content">
-                        <h3>משחק הזיכרון</h3>
-                        <p>מצאו את הזוגות בזמן הקצר ביותר.</p>
-                        <a href="#" class="play-button">בקרוב...</a>
+                        <img src="images/soduko.png" alt="Sudoku Master">
+                        <h3>סודוקו מאסטר</h3>
+                        <p>אתגר ההיגיון האולטימטיבי. מלאו את הלוח במספרים ללא חזרות.</p>
+                        <a href="#" class="play-button soon">בקרוב...</a>
                     </div>
                 </article>
 
-                <article class="game-card">
-                    <img src="images/pacman_img.jpg" alt="Space Invaders">
+                <article class="game-card soon">
                     <div class="card-content">
+                        <img src="images/aliens.png" alt="Space Invaders">
                         <h3>פולשים מהחלל</h3>
                         <p>הגן על כדור הארץ מפני מתקפת החייזרים.</p>
-                        <a href="#" class="play-button">בקרוב...</a>
+                        <a href="#" class="play-button soon">בקרוב...</a>
                     </div>
                 </article>
 
-                <article class="game-card">
-                    <img src="images/pacman_img.jpg" alt="Game 5">
+                <article class="game-card soon">
                     <div class="card-content">
-                        <h3>פולשים מהחלל</h3>
-                        <p>הגן על כדור הארץ מפני מתקפת החייזרים.</p>
-                        <a href="#" class="play-button">בקרוב...</a>
+                        <img src="images/target.png" alt="Target Shooting">
+                        <h3>קליעה למטרה</h3>
+                        <p>בדקו את הדיוק שלכם. פגעו במטרות זזות וצברו ניקוד גבוה.</p>
+                        <a href="#" class="play-button soon">בקרוב...</a>
                     </div>
                 </article>
 
-                <article class="game-card">
-                    <img src="images/pacman_img.jpg" alt="Game 6">
+                <article class="game-card soon">
                     <div class="card-content">
-                        <h3>פולשים מהחלל</h3>
-                        <p>הגן על כדור הארץ מפני מתקפת החייזרים.</p>
-                        <a href="#" class="play-button">בקרוב...</a>
+                        <img src="images/puzzle.png" alt="Puzzle Game">
+                        <h3>פאזל תמונות</h3>
+                        <p>הרכיבו את התמונה המפוצלת בזמן הקצר ביותר</p>
+                        <a href="#" class="play-button soon">בקרוב...</a>
                     </div>
                 </article>
             </div>
@@ -184,16 +199,10 @@
         </footer>
 
         <script src="js/cookies.js"></script>
+        <script src="js/home.js"></script>
         <script>
             // נפעיל את האייקונים פעם ראשונה (עבור שאר העמוד)
             lucide.createIcons();
-
-            // Navbar Scroll Effect
-            window.addEventListener('scroll', () => {
-                const header = document.getElementById('navbar');
-                if (window.scrollY > 50) header.classList.add('scrolled');
-                else header.classList.remove('scrolled');
-            });
 
             // --- Main Logic ---
             document.addEventListener('DOMContentLoaded', () => {
@@ -226,67 +235,6 @@
                 // 2. הפעלת טבלת המובילים
                 loadLeaderboard();
             });
-
-            // --- Leaderboard Logic (החלק החדש והמתוקן) ---
-            function loadLeaderboard() {
-                // 1. קבלת כל המשתמשים
-                const users = JSON.parse(localStorage.getItem('users')) || [];
-                
-                if (users.length === 0) return;
-
-                // 2. חישוב ציון כולל לכל משתמש
-                const rankedUsers = users.map(user => {
-                    let totalPoints = 0;
-
-                    // בדיקה אם למשתמש יש היסטוריית משחקים (gamesHistory)
-                    if (user.gamesHistory) {
-                        // gamesHistory הוא אובייקט (מפתח=שם משחק), עוברים על הערכים שלו
-                        Object.values(user.gamesHistory).forEach(gameSessions => {
-                            // gameSessions הוא מערך של משחקים ששוחקו
-                            if (Array.isArray(gameSessions)) {
-                                gameSessions.forEach(session => {
-                                    // הוספת הניקוד מכל סשן לסך הכולל
-                                    totalPoints += parseInt(session.score) || 0;
-                                });
-                            }
-                        });
-                    } 
-                    
-                    else if (user.highScores && Array.isArray(user.highScores)) {
-                        totalPoints = user.highScores.reduce((sum, s) => sum + (parseInt(s.score) || s), 0);
-                    }
-
-                    return {
-                        name: user.name || user.username,
-                        username: user.username,
-                        score: totalPoints
-                    };
-                });
-
-                // 3. מיון לפי ניקוד יורד (הכי גבוה ראשון)
-                rankedUsers.sort((a, b) => b.score - a.score);
-
-                // 4. עדכון ה-DOM (רק ל-3 הראשונים)
-                const top3 = rankedUsers.slice(0, 3);
-                
-                // עדכון המקום הראשון (Gold)
-                if (top3[0]) updatePodiumCard('gold', top3[0]);
-                // עדכון המקום השני (Silver)
-                if (top3[1]) updatePodiumCard('silver', top3[1]);
-                // עדכון המקום השלישי (Bronze)
-                if (top3[2]) updatePodiumCard('bronze', top3[2]);
-            }
-
-            function updatePodiumCard(type, user) {
-                // איתור הכרטיס לפי המחלקה (gold/silver/bronze)
-                const card = document.querySelector(`.podium-card.${type}`);
-                if (card) {
-                    card.querySelector('.podium-name').innerText = user.name;
-                    card.querySelector('.podium-score').innerText = user.score.toLocaleString() + ' נק\'';
-                    // עדכון תמונה לפי שם המשתמש
-                    card.querySelector('img').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}&backgroundColor=c0aede`;
-                }
-            }
         </script>
     </body>
 </html>

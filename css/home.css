@@ -34,11 +34,12 @@ body {
 
 /* --- Floating Glass Header --- */
 .site-header {
-    position: fixed;
+    position:relative;
     top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    margin-left: auto;
+    margin-right: auto;
     width: 90%;
+    margin-bottom: 10px;
     max-width: 1200px;
     height: 100px;
     background: #fedd9e;
@@ -51,13 +52,6 @@ body {
     padding: 0 30px;
     z-index: 1000;
     box-shadow: 0 10px 40px rgba(46, 204, 113, 0.1);
-    transition: all 0.3s ease;
-}
-
-.site-header.scrolled {
-    top: 10px;
-    width: 95%;
-    box-shadow: 0 30px 45px rgba(0,0,0,0.1);
 }
 
 .header-content {
@@ -171,8 +165,7 @@ body {
 
 /* --- Intro Banner --- */
 .intro-section {
-    margin-top: 140px;
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 0 1rem;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -345,13 +338,18 @@ body {
     border-color: var(--primary);
 }
 
-.game-card img {
+.soon:hover {
+    border-color: #6a6a6a;
+}
+
+.card-content img {
     transition: transform 0.5s;
     background-color: var(--text-dark);
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
-    width: 300px;
+    width: 100%;
     height: auto;
     max-height: 200px;
+    object-fit: cover;
     border-radius: 10px;
 }
 
@@ -391,6 +389,91 @@ body {
     background: var(--primary);
     color: white;
     border-color: var(--primary);
+}
+
+.game-card:hover .soon {
+    background: #6a6a6a;
+    border-color: #6a6a6a;
+}
+
+/* --- User Rank Section --- */
+.user-rank-section {
+    max-width: 600px;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+}
+
+.user-rank-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 2px solid #E9ECEF;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: all 0.3s;
+}
+
+.rank-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: var(--primary);
+    border-radius: 50%;
+    color: white;
+    flex-shrink: 0;
+}
+
+.rank-icon i {
+    width: 24px;
+    height: 24px;
+}
+
+.rank-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.rank-label {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+.rank-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    font-family: 'Fredoka', sans-serif;
+}
+
+.rank-score {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-end;
+    padding: 0.6rem 0.8rem;
+    background: white;
+    border-radius: 8px;
+    border: 2px solid #f0f0f0;
+}
+
+.score-label {
+    font-size: 0.7rem;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+.score-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Fredoka', sans-serif;
 }
 
 /* --- Footer --- */

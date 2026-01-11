@@ -48,6 +48,7 @@ body {
     width: 100%;
     box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
     margin-top: auto;
+    direction: ltr;
 }
 
 .site-footer p {

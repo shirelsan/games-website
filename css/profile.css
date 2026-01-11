@@ -209,46 +209,97 @@ body {
     padding-right: 5px; 
 }
 
-/* Custom Scrollbar */
-.history-list::-webkit-scrollbar { 
-    width: 6px; 
+/* --- Table Styles --- */
+.games-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 16px;
+    border: 2px solid #eee;
+    overflow: hidden;
 }
 
-.history-list::-webkit-scrollbar-thumb { 
-    background-color: #ccc; 
-    border-radius: 10px; 
-}
-
-.game-item {
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-    padding: 12px 15px; 
+.games-table thead {
     background-color: #f8f9fa;
-    border-radius: 16px; 
-    border: 2px solid #eee; 
+    border-bottom: 2px solid #eee;
+}
+
+.games-table th {
+    padding: 12px 15px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    text-transform: none;
+}
+
+.games-table tbody tr {
+    border-bottom: 1px solid #eee;
     transition: 0.2s;
 }
 
-.game-item:hover { 
-    border-color: var(--text-dark); 
-    background-color: white; 
-    transform: scale(1.01); 
-    box-shadow: 3px 3px 0 rgba(0,0,0,0.1); 
+.games-table tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.01);
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,0.05);
 }
 
-.game-item.peak-item { 
-    border-color: var(--accent); 
-    background-color: #fff8e1; 
-} 
-
-.game-info { 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
+.games-table tbody tr.peak-row {
+    background-color: #fff8e1;
 }
 
-.game-icon { 
+.games-table tbody tr.peak-row:hover {
+    background-color: #fffacc;
+}
+
+.games-table tbody tr.empty-row {
+    background-color: white;
+}
+
+.games-table tbody tr.empty-row:hover {
+    background-color: white;
+    transform: none;
+}
+
+.games-table td {
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.games-table .col-icon {
+    width: 50px;
+    text-align: center;
+}
+
+.games-table .col-name {
+    font-weight: 700;
+    flex: 1;
+}
+
+.games-table .col-date {
+    color: #888;
+    font-size: 0.85rem;
+    width: 130px;
+}
+
+.games-table .col-score {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--accent);
+    width: 80px;
+    text-align: center;
+}
+
+/* Custom Scrollbar */
+.games-table::-webkit-scrollbar { 
+    width: 6px; 
+}
+
+.games-table::-webkit-scrollbar-thumb { 
+    background-color: #ccc; 
+    border-radius: 10px; 
+}.game-icon { 
     width: 35px; 
     height: 35px; 
     border-radius: 10px; 
